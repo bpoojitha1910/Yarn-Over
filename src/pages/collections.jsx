@@ -58,7 +58,7 @@ export default function Collections({
 
   const [collections, setCollections] = useState([]);
   useEffect(() => {
-    fetch("https://yarn-over-1.onrender.com/products")
+    fetch("https://yarn-over-1.onrender.com")
       .then((res) => res.json())
       .then((data) => {
         setCollections(data);
