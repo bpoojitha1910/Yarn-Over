@@ -284,9 +284,9 @@ export default function Collections({
                         fontWeight: "600",
                         color:
                           item.status === "Sold Out"
-                            ? "#E53935"
+                            ? "#97605f"
                             : item.quantity <= 3
-                            ? "#E67E22"
+                            ? "#8f7b6b"
                             : "#2E7D32",
                       }}
                     >
