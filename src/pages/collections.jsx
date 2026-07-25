@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 
+
 export default function Collections({
   onNavigate,
   cartItems,
