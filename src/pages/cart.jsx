@@ -67,7 +67,7 @@ export default function Cart({
     }
 
     try {
-      const response = await fetch("http://localhost:5000/orders", {
+      const response = await fetch(https://yarn-over-1.onrender.com, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

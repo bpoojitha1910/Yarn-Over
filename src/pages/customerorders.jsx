@@ -15,7 +15,7 @@ export default function CustomOrders({ onNavigate }) {
   console.log("Submitting order...");
 
   try {
-    const response = await fetch("http://localhost:5000/custom-orders", {
+    const response = await fetch("https://yarn-over-1.onrender.com/custom-orders", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
