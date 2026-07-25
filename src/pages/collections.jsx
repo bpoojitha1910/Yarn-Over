@@ -1,73 +1,69 @@
 import { useState, useEffect } from "react";
-
 import { API_URL } from "../config";
-
 
 export default function Collections({
   onNavigate,
-  cartItems,
+  cartItems = [], // 👈 Default fallback to empty array to avoid crashes
   setCartItems,
 }) {
   const [flippedCards, setFlippedCards] = useState({});
+  const [collections, setCollections] = useState([]);
 
   const toggleFlip = (index) => {
     setFlippedCards((prev) => ({ ...prev, [index]: !prev[index] }));
   };
 
   const addToCart = (item) => {
-  const existingItem = cartItems.find(
-    (cartItem) => cartItem.id === item.id
-  );
+    // Safely check existing item
+    const currentCart = Array.isArray(cartItems) ? cartItems : [];
+    const existingItem = currentCart.find((cartItem) => cartItem.id === item.id);
 
-  if (existingItem) {
-    if (existingItem.quantity >= item.quantity) {
-      alert(`Only ${item.quantity} item(s) available in stock.`);
-      return;
+    if (existingItem) {
+      if (existingItem.quantity >= item.quantity) {
+        alert(`Only ${item.quantity} item(s) available in stock.`);
+        return;
+      }
+
+      setCartItems?.(
+        currentCart.map((cartItem) =>
+          cartItem.id === item.id
+            ? {
+                ...cartItem,
+                quantity: cartItem.quantity + 1,
+              }
+            : cartItem
+        )
+      );
+    } else {
+      if (item.quantity <= 0) {
+        alert("This product is sold out.");
+        return;
+      }
+
+      setCartItems?.([
+        ...currentCart,
+        {
+          id: item.id,
+          name: item.name,
+          price: Number(item.price),
+          image: `/${item.image}`,
+          quantity: 1,
+          stock: item.quantity,
+        },
+      ]);
     }
 
-    setCartItems(
-      cartItems.map((cartItem) =>
-        cartItem.id === item.id
-          ? {
-              ...cartItem,
-              quantity: cartItem.quantity + 1,
-            }
-          : cartItem
-      )
-    );
-  } else {
-    if (item.quantity <= 0) {
-      alert("This product is sold out.");
-      return;
-    }
+    alert(`${item.name} added to cart!`);
+  };
 
-    setCartItems([
-      ...cartItems,
-      {
-        id: item.id,
-        name: item.name,
-        price: Number(item.price),
-        image: `/${item.image}`,
-        quantity: 1,
-        stock: item.quantity,
-      },
-    ]);
-  }
-
-  alert(`${item.name} added to cart!`);
-};
-         
-
-  const [collections, setCollections] = useState([]);
-
-useEffect(() => {
-  fetch(`${API_URL}/products`)
-    .then((res) => res.json())
-    .then((data) => {
-      setCollections(data);
-    })
-    .catch((err) => console.error(err));
-}, []);
+  useEffect(() => {
+    fetch(`${API_URL}/products`)
+      .then((res) => res.json())
+      .then((data) => {
+        setCollections(data);
+      })
+      .catch((err) => console.error("Error fetching products:", err));
+  }, []);
 
   return (
     <div
@@ -184,7 +180,7 @@ useEffect(() => {
             justifyContent: "center",
           }}
         >
-          {collections.map((item, index) => {
+          {collections?.map((item, index) => {
             const isFlipped = !!flippedCards[index];
 
             return (
@@ -248,8 +244,7 @@ useEffect(() => {
                       backfaceVisibility: "hidden",
                       WebkitBackfaceVisibility: "hidden",
                       transform: "rotateY(180deg)",
-                      // ✨ Dynamic card background color from database
-                      backgroundColor: item.bgColor || "#F8D8DD", 
+                      backgroundColor: item.bgColor || "#F8D8DD",
                       borderRadius: "40px",
                       padding: "16px",
                       boxSizing: "border-box",
@@ -265,7 +260,6 @@ useEffect(() => {
                       style={{
                         fontSize: "28px",
                         fontWeight: 600,
-                        // ✨ Dynamic heading text color
                         color: item.textColor || "#1A1A1A",
                         margin: "0 0 6px 0",
                         fontFamily: "'Playfair Display', serif",
@@ -277,7 +271,6 @@ useEffect(() => {
                       style={{
                         fontSize: "20px",
                         fontWeight: 600,
-                        // ✨ Dynamic price text color
                         color: item.textColor || "#1A1A1A",
                         margin: 0,
                         fontFamily: "'Playfair Display', serif",
@@ -287,50 +280,54 @@ useEffect(() => {
                     </p>
 
                     <p
-  style={{
-    marginTop: "8px",
-    fontWeight: "600",
-    color:
-      item.status === "Sold Out"
-        ? "#E53935"
-        : item.quantity <= 3
-        ? "#E67E22"
-        : "#2E7D32",
-  }}
->
-  {item.status === "Sold Out"
-    ? "❌ Sold Out"
-    : item.quantity <= 3
-    ? `🔥 Only ${item.quantity} left`
-    : `✅ In Stock (${item.quantity})`}
-</p>
+                      style={{
+                        marginTop: "8px",
+                        fontWeight: "600",
+                        color:
+                          item.status === "Sold Out"
+                            ? "#E53935"
+                            : item.quantity <= 3
+                            ? "#E67E22"
+                            : "#2E7D32",
+                      }}
+                    >
+                      {item.status === "Sold Out"
+                        ? "❌ Sold Out"
+                        : item.quantity <= 3
+                        ? `🔥 Only ${item.quantity} left`
+                        : `✅ In Stock (${item.quantity})`}
+                    </p>
 
-                    
-                     <button
-  disabled={item.status === "Sold Out"}
-  onClick={(e) => {
-    e.stopPropagation(); // Prevent card from flipping
-    addToCart(item);
-  }}
-  style={{
-    marginTop: "18px",
-    width: "100%",
-    padding: "12px",
-    borderRadius: "20px",
-    border: "none",
-    cursor: item.status === "Sold Out" ? "not-allowed" : "pointer",
-    backgroundColor:
-      item.status === "Sold Out" ? "#BDBDBD" : "#CB6565",
-    color: "white",
-    fontSize: "16px",
-    fontWeight: 700,
-    fontFamily: "'Playfair Display', serif",
-  }}
->
-  {item.status === "Sold Out"
-    ? "❌ Sold Out"
-    : "🛒 Add to Cart"}
-</button>
+                    <button
+                      disabled={item.status === "Sold Out"}
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevent card from flipping back
+                        addToCart(item);
+                      }}
+                      style={{
+                        marginTop: "18px",
+                        width: "100%",
+                        padding: "12px",
+                        borderRadius: "20px",
+                        border: "none",
+                        cursor:
+                          item.status === "Sold Out"
+                            ? "not-allowed"
+                            : "pointer",
+                        backgroundColor:
+                          item.status === "Sold Out"
+                            ? "#BDBDBD"
+                            : "#CB6565",
+                        color: "white",
+                        fontSize: "16px",
+                        fontWeight: 700,
+                        fontFamily: "'Playfair Display', serif",
+                      }}
+                    >
+                      {item.status === "Sold Out"
+                        ? "❌ Sold Out"
+                        : "🛒 Add to Cart"}
+                    </button>
                   </div>
                 </div>
               </div>
