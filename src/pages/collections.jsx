@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useState, useEffect } from "react";
+
 import { API_URL } from "../config";
 
 
@@ -59,7 +59,8 @@ export default function Collections({
          
 
   const [collections, setCollections] = useState([]);
-  useEffect(() => {
+
+useEffect(() => {
   fetch(`${API_URL}/products`)
     .then((res) => res.json())
     .then((data) => {
