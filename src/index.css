@@ -1,0 +1,13 @@
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: none !important;
+  background-color: #FAF4EB !important;
+  overflow: auto;
+}
