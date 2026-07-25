@@ -68,14 +68,20 @@ export default function Cart({
     }
 
     try {
+      const user = auth.currentUser;
+
+if (!user) {
+  alert("Please log in before placing an order.");
+  return;
+}
       const response = await fetch(`${API_URL}/orders`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          userId: auth.currentUser?.uid,
-          userEmail: auth.currentUser?.email,
+          userId: user.uid,
+          userEmail: user.email,
           customer,
           cartItems,
           total,
