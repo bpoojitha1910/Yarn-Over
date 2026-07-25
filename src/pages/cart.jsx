@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { auth } from "../firebase";
+import { API_URL } from "../config";
 
 const inputStyle = {
   width: "100%",
@@ -67,7 +68,7 @@ export default function Cart({
     }
 
     try {
-      const response = await fetch(https://yarn-over-1.onrender.com, {
+      const response = await fetch(`${API_URL}/orders`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
