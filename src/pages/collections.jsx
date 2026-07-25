@@ -3,7 +3,7 @@ import { API_URL } from "../config";
 
 export default function Collections({
   onNavigate,
-  cartItems = [], // 👈 Default fallback to empty array to avoid crashes
+  cartItems = [],
   setCartItems,
 }) {
   const [flippedCards, setFlippedCards] = useState({});
@@ -14,7 +14,6 @@ export default function Collections({
   };
 
   const addToCart = (item) => {
-    // Safely check existing item
     const currentCart = Array.isArray(cartItems) ? cartItems : [];
     const existingItem = currentCart.find((cartItem) => cartItem.id === item.id);
 
@@ -301,7 +300,7 @@ export default function Collections({
                     <button
                       disabled={item.status === "Sold Out"}
                       onClick={(e) => {
-                        e.stopPropagation(); // Prevent card from flipping back
+                        e.stopPropagation();
                         addToCart(item);
                       }}
                       style={{
