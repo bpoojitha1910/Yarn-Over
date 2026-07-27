@@ -49,7 +49,7 @@ const dropdownButtonStyle = {
   textAlign: "left",
   cursor: "pointer",
   color: "#CB6565",
-  fontSize: "16px",
+  fontSize: "25px",
   fontFamily: "'Playfair Display', serif",
 };
 
@@ -175,7 +175,8 @@ const dropdownButtonStyle = {
             background: "#fff",
             borderRadius: "15px",
             boxShadow: "0 8px 20px rgba(0,0,0,0.15)",
-            minWidth: "180px",
+            minWidth: "200px",
+            minHeight:"135px",
             zIndex: 999,
             padding: "10px",
           }}
