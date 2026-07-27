@@ -3,41 +3,33 @@ import { auth } from "../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
 export default function Login({ onNavigate }) {
-  // User Form State
-  const [userEmail, setUserEmail] = useState("");
-  const [userPassword, setUserPassword] = useState("");
-  const [userLoading, setUserLoading] = useState(false);
+  const [isAdminMode, setIsAdminMode] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  // Admin Form State
-  const [adminEmail, setAdminEmail] = useState("");
-  const [adminPassword, setAdminPassword] = useState("");
-  const [adminLoading, setAdminLoading] = useState(false);
-
-  // User Login Handler
-  const handleUserLogin = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    setUserLoading(true);
-    try {
-      await signInWithEmailAndPassword(auth, userEmail, userPassword);
-      onNavigate?.("home");
-    } catch (error) {
-      alert("User Login Error: " + error.message);
-    } finally {
-      setUserLoading(false);
-    }
-  };
+    setLoading(true);
 
-  // Admin Login Handler
-  const handleAdminLogin = async (e) => {
-    e.preventDefault();
-    setAdminLoading(true);
     try {
-      await signInWithEmailAndPassword(auth, adminEmail, adminPassword);
-      onNavigate?.("adminDashboard");
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      if (isAdminMode) {
+        // OPTIONAL: Check if the user is actually an admin before routing
+        // e.g., using Firebase Custom Claims or fetching user role from Firestore:
+        // const idTokenResult = await user.getIdTokenResult();
+        // if (!idTokenResult.claims.admin) throw new Error("Unauthorized admin access.");
+
+        onNavigate?.("adminDashboard");
+      } else {
+        onNavigate?.("home");
+      }
     } catch (error) {
-      alert("Admin Login Error: " + error.message);
+      alert(`${isAdminMode ? "Admin" : "User"} Login Error: ${error.message}`);
     } finally {
-      setAdminLoading(false);
+      setLoading(false);
     }
   };
 
@@ -93,7 +85,7 @@ export default function Login({ onNavigate }) {
         ← home
       </button>
 
-      {/* Outer Main Container Card */}
+      {/* Main Container Card */}
       <div
         style={{
           position: "relative",
@@ -101,15 +93,15 @@ export default function Login({ onNavigate }) {
           backgroundColor: "rgba(239, 209, 214, 0.92)",
           backdropFilter: "blur(6px)",
           width: "100%",
-          maxWidth: "800px",
+          maxWidth: "480px",
           padding: "35px 30px",
           borderRadius: "35px",
           boxShadow: "0 8px 25px rgba(0,0,0,0.1)",
           boxSizing: "border-box",
         }}
       >
-        {/* Top Header Section with Dividers */}
-        <div style={{ textAlign: "center", marginBottom: "30px" }}>
+        {/* Header with Dividers */}
+        <div style={{ textAlign: "center", marginBottom: "25px" }}>
           <hr style={{ border: "none", borderTop: "2px dashed #CB6565", margin: "0 0 15px 0" }} />
           <h1
             style={{
@@ -124,107 +116,140 @@ export default function Login({ onNavigate }) {
           <hr style={{ border: "none", borderTop: "2px dashed #CB6565", margin: "15px 0 0 0" }} />
         </div>
 
-        {/* Side-by-Side Sub-Cards Container */}
+        {/* Role Selector Tabs */}
         <div
           style={{
             display: "flex",
-            flexWrap: "wrap",
-            gap: "25px",
-            justifyContent: "center",
-            alignItems: "stretch",
+            gap: "10px",
+            marginBottom: "20px",
+            backgroundColor: "rgba(255, 255, 255, 0.4)",
+            padding: "5px",
+            borderRadius: "16px",
           }}
         >
-          {/* User Login Sub-Card */}
-          <div
+          <button
+            type="button"
+            onClick={() => setIsAdminMode(false)}
             style={{
-              flex: "1 1 300px",
-              maxWidth: "360px",
-              border: "2px dashed #CB6565",
-              borderRadius: "25px",
-              padding: "25px 20px",
-              backgroundColor: "rgba(255, 255, 255, 0.5)",
-              boxSizing: "border-box",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
+              flex: 1,
+              padding: "10px",
+              borderRadius: "12px",
+              border: "none",
+              backgroundColor: !isAdminMode ? "#CB6565" : "transparent",
+              color: !isAdminMode ? "white" : "#CB6565",
+              fontWeight: 700,
+              fontFamily: "'Playfair Display', serif",
+              cursor: "pointer",
+              transition: "all 0.2s ease",
             }}
           >
-            <div>
-              <h2
-                style={{
-                  color: "#CB6565",
-                  fontSize: "24px",
-                  fontWeight: 600,
-                  textAlign: "center",
-                  marginTop: 0,
-                  marginBottom: "20px",
-                }}
-              >
-                👤 User Login
-              </h2>
+            👤 User
+          </button>
+          <button
+            type="button"
+            onClick={() => setIsAdminMode(true)}
+            style={{
+              flex: 1,
+              padding: "10px",
+              borderRadius: "12px",
+              border: "none",
+              backgroundColor: isAdminMode ? "#CB6565" : "transparent",
+              color: isAdminMode ? "white" : "#CB6565",
+              fontWeight: 700,
+              fontFamily: "'Playfair Display', serif",
+              cursor: "pointer",
+              transition: "all 0.2s ease",
+            }}
+          >
+            🔐 Admin
+          </button>
+        </div>
 
-              <form onSubmit={handleUserLogin}>
-                <input
-                  type="email"
-                  placeholder="Email"
-                  value={userEmail}
-                  onChange={(e) => setUserEmail(e.target.value)}
-                  required
-                  style={{
-                    width: "100%",
-                    padding: "12px",
-                    marginBottom: "12px",
-                    borderRadius: "14px",
-                    border: "2px solid #CB6565",
-                    outline: "none",
-                    fontFamily: "'Playfair Display', serif",
-                    fontSize: "15px",
-                    boxSizing: "border-box",
-                  }}
-                />
+        {/* Form Container */}
+        <div
+          style={{
+            border: "2px dashed #CB6565",
+            borderRadius: "25px",
+            padding: "25px 20px",
+            backgroundColor: "rgba(255, 255, 255, 0.5)",
+            boxSizing: "border-box",
+          }}
+        >
+          <h2
+            style={{
+              color: "#CB6565",
+              fontSize: "22px",
+              fontWeight: 600,
+              textAlign: "center",
+              marginTop: 0,
+              marginBottom: "20px",
+            }}
+          >
+            {isAdminMode ? "🔐 Admin Portal" : "👤 Welcome Back"}
+          </h2>
 
-                <input
-                  type="password"
-                  placeholder="Password"
-                  value={userPassword}
-                  onChange={(e) => setUserPassword(e.target.value)}
-                  required
-                  style={{
-                    width: "100%",
-                    padding: "12px",
-                    marginBottom: "18px",
-                    borderRadius: "14px",
-                    border: "2px solid #CB6565",
-                    outline: "none",
-                    fontFamily: "'Playfair Display', serif",
-                    fontSize: "15px",
-                    boxSizing: "border-box",
-                  }}
-                />
+          <form onSubmit={handleLogin}>
+            <input
+              type="email"
+              placeholder={isAdminMode ? "Admin Email" : "Email"}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              style={{
+                width: "100%",
+                padding: "12px",
+                marginBottom: "12px",
+                borderRadius: "14px",
+                border: "2px solid #CB6565",
+                outline: "none",
+                fontFamily: "'Playfair Display', serif",
+                fontSize: "15px",
+                boxSizing: "border-box",
+              }}
+            />
 
-                <button
-                  type="submit"
-                  disabled={userLoading}
-                  style={{
-                    width: "100%",
-                    padding: "12px",
-                    backgroundColor: "#CB6565",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "14px",
-                    fontSize: "16px",
-                    fontWeight: 700,
-                    cursor: userLoading ? "not-allowed" : "pointer",
-                    fontFamily: "'Playfair Display', serif",
-                    marginBottom: "15px",
-                    opacity: userLoading ? 0.7 : 1,
-                  }}
-                >
-                  {userLoading ? "Logging in..." : "[ Login ]"}
-                </button>
-              </form>
-            </div>
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              style={{
+                width: "100%",
+                padding: "12px",
+                marginBottom: "18px",
+                borderRadius: "14px",
+                border: "2px solid #CB6565",
+                outline: "none",
+                fontFamily: "'Playfair Display', serif",
+                fontSize: "15px",
+                boxSizing: "border-box",
+              }}
+            />
 
+            <button
+              type="submit"
+              disabled={loading}
+              style={{
+                width: "100%",
+                padding: "12px",
+                backgroundColor: "#CB6565",
+                color: "white",
+                border: "none",
+                borderRadius: "14px",
+                fontSize: "16px",
+                fontWeight: 700,
+                cursor: loading ? "not-allowed" : "pointer",
+                fontFamily: "'Playfair Display', serif",
+                marginBottom: !isAdminMode ? "15px" : "0",
+                opacity: loading ? 0.7 : 1,
+              }}
+            >
+              {loading ? "Logging in..." : "[ Login ]"}
+            </button>
+          </form>
+
+          {!isAdminMode && (
             <button
               onClick={() => onNavigate?.("register")}
               style={{
@@ -242,98 +267,7 @@ export default function Login({ onNavigate }) {
             >
               Create Account
             </button>
-          </div>
-
-          {/* Admin Login Sub-Card */}
-          <div
-            style={{
-              flex: "1 1 300px",
-              maxWidth: "360px",
-              border: "2px dashed #CB6565",
-              borderRadius: "25px",
-              padding: "25px 20px",
-              backgroundColor: "rgba(255, 255, 255, 0.5)",
-              boxSizing: "border-box",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-            }}
-          >
-            <div>
-              <h2
-                style={{
-                  color: "#CB6565",
-                  fontSize: "24px",
-                  fontWeight: 600,
-                  textAlign: "center",
-                  marginTop: 0,
-                  marginBottom: "20px",
-                }}
-              >
-                🔐 Admin Login
-              </h2>
-
-              <form onSubmit={handleAdminLogin}>
-                <input
-                  type="email"
-                  placeholder="Admin Email"
-                  value={adminEmail}
-                  onChange={(e) => setAdminEmail(e.target.value)}
-                  required
-                  style={{
-                    width: "100%",
-                    padding: "12px",
-                    marginBottom: "12px",
-                    borderRadius: "14px",
-                    border: "2px solid #CB6565",
-                    outline: "none",
-                    fontFamily: "'Playfair Display', serif",
-                    fontSize: "15px",
-                    boxSizing: "border-box",
-                  }}
-                />
-
-                <input
-                  type="password"
-                  placeholder="Password"
-                  value={adminPassword}
-                  onChange={(e) => setAdminPassword(e.target.value)}
-                  required
-                  style={{
-                    width: "100%",
-                    padding: "12px",
-                    marginBottom: "18px",
-                    borderRadius: "14px",
-                    border: "2px solid #CB6565",
-                    outline: "none",
-                    fontFamily: "'Playfair Display', serif",
-                    fontSize: "15px",
-                    boxSizing: "border-box",
-                  }}
-                />
-
-                <button
-                  type="submit"
-                  disabled={adminLoading}
-                  style={{
-                    width: "100%",
-                    padding: "12px",
-                    backgroundColor: "#CB6565",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "14px",
-                    fontSize: "16px",
-                    fontWeight: 700,
-                    cursor: adminLoading ? "not-allowed" : "pointer",
-                    fontFamily: "'Playfair Display', serif",
-                    opacity: adminLoading ? 0.7 : 1,
-                  }}
-                >
-                  {adminLoading ? "Logging in..." : "[ Login ]"}
-                </button>
-              </form>
-            </div>
-          </div>
+          )}
         </div>
       </div>
     </div>
