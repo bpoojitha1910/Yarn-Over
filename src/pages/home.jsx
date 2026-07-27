@@ -149,7 +149,7 @@ const dropdownButtonStyle = {
                 maxWidth: '700px',
                 display: 'flex',
                 gap: '100px',
-                alignItems: 'center',
+                marginRight: '-700px',
                 justifyContent: 'flex-end',
                 marginTop: '20px',
                 paddingRight: '80px',
