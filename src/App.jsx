@@ -70,7 +70,13 @@ useEffect(() => {
       }}
     >
 
-      {currentPage === 'home' && <Home onNavigate={setCurrentPage} />}
+      {currentPage === "home" && (
+  <Home
+    onNavigate={setCurrentPage}
+    user={user}
+    handleLogout={handleLogout}
+  />
+)}
 
       {currentPage === "collections" && (
         <Collections
