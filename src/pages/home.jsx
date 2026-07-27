@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 
-export default function Home({ onNavigate }) {
+export default function Home({ onNavigate, user, handleLogout }) {
   const [scale, setScale] = useState(1);
+  const [showMenu, setShowMenu] = useState(false);
 
   useEffect(() => {
     document.body.style.backgroundColor = '#FAF4EB';
@@ -27,6 +28,30 @@ export default function Home({ onNavigate }) {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+const navButtonStyle = {
+  background: "none",
+  border: "none",
+  color: "#1A1A1A",
+  fontSize: "29px",
+  fontWeight: 650,
+  fontFamily: "'Playfair Display', serif",
+  cursor: "pointer",
+  padding: "8px 12px",
+  transition: "color 0.2s ease",
+};
+
+const dropdownButtonStyle = {
+  width: "100%",
+  border: "none",
+  background: "none",
+  padding: "10px",
+  textAlign: "left",
+  cursor: "pointer",
+  color: "#CB6565",
+  fontSize: "16px",
+  fontFamily: "'Playfair Display', serif",
+};
 
   return (
     <div
@@ -129,36 +154,102 @@ export default function Home({ onNavigate }) {
                 marginTop: '20px',
                 paddingRight: '80px',
               }}
-            >
-              {[
-                ['login', 'login'],
-                ['our collections', 'collections'],
-                ['custom orders', 'custom-orders'],
-                ['reviews', 'reviews'],
-                ['🛒 cart', 'cart'],
-                ['my orders', 'myorders'],
-              ].map(([label, page]) => (
-                <button
-                  key={page}
-                  onClick={() => onNavigate?.(page)}
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    color: '#1A1A1A',
-                    fontSize: '29px',
-                    fontWeight: 650,
-                    fontFamily: "'Playfair Display', serif",
-                    cursor: 'pointer',
-                    padding: '8px 12px',
-                    transition: 'color 0.2s ease',
-                    marginRight: '-100px',
-                  }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = '#CB6565')}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = '#1A1A1A')}
-                >
-                  {label}
-                </button>
-              ))}
+            ><div style={{ position: "relative" }}>
+  {user ? (
+    <>
+      <button
+  onClick={() => setShowMenu(!showMenu)}
+  style={navButtonStyle}
+  onMouseEnter={(e) => (e.currentTarget.style.color = "#CB6565")}
+  onMouseLeave={(e) => (e.currentTarget.style.color = "#1A1A1A")}
+>
+  👤 My Account ▼
+</button>
+
+      {showMenu && (
+        <div
+          style={{
+            position: "absolute",
+            top: "45px",
+            left: 0,
+            background: "#fff",
+            borderRadius: "15px",
+            boxShadow: "0 8px 20px rgba(0,0,0,0.15)",
+            minWidth: "180px",
+            zIndex: 999,
+            padding: "10px",
+          }}
+        >
+          <button
+            style={dropdownButtonStyle}
+            onClick={() => {
+              setShowMenu(false);
+              onNavigate("myorders");
+            }}
+          >
+            📦 My Orders
+          </button>
+
+          <button
+            style={dropdownButtonStyle}
+            onClick={() => {
+              setShowMenu(false);
+              handleLogout();
+            }}
+          >
+            🚪 Logout
+          </button>
+        </div>
+      )}
+    </>
+  ) : (
+    <button
+  onClick={() => onNavigate("login")}
+  style={navButtonStyle}
+  onMouseEnter={(e) => (e.currentTarget.style.color = "#CB6565")}
+  onMouseLeave={(e) => (e.currentTarget.style.color = "#1A1A1A")}
+>
+  Login
+</button>
+  )}
+</div>
+
+<button
+  onClick={() => onNavigate("collections")}
+  style={navButtonStyle}
+  onMouseEnter={(e) => (e.currentTarget.style.color = "#CB6565")}
+  onMouseLeave={(e) => (e.currentTarget.style.color = "#1A1A1A")}
+>
+  Our Collections
+</button>
+
+<button
+  onClick={() => onNavigate("custom-orders")}
+  style={navButtonStyle}
+  onMouseEnter={(e) => (e.currentTarget.style.color = "#CB6565")}
+  onMouseLeave={(e) => (e.currentTarget.style.color = "#1A1A1A")}
+>
+  Custom Orders
+</button>
+
+<button
+  onClick={() => onNavigate("reviews")}
+  style={navButtonStyle}
+  onMouseEnter={(e) => (e.currentTarget.style.color = "#CB6565")}
+  onMouseLeave={(e) => (e.currentTarget.style.color = "#1A1A1A")}
+>
+  Reviews
+</button>
+
+<button
+  onClick={() => onNavigate("cart")}
+  style={navButtonStyle}
+  onMouseEnter={(e) => (e.currentTarget.style.color = "#CB6565")}
+  onMouseLeave={(e) => (e.currentTarget.style.color = "#1A1A1A")}
+>
+  🛒 Cart
+</button>
+              
             </div>
           </div>
 

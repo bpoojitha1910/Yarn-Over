@@ -18,18 +18,42 @@ import AdminDashboard from './pages/AdminDashboard';
 
 import MyOrders from "./pages/MyOrders";
 
+import { auth } from "./firebase";
+
+import { onAuthStateChanged, signOut } from "firebase/auth";
+
 export default function App() {
 
   const [currentPage, setCurrentPage] = useState("home");
+  const [user, setUser] = useState(null);
 
   const [cartItems, setCartItems] = useState(() => {
   const savedCart = localStorage.getItem("cartItems");
   return savedCart ? JSON.parse(savedCart) : [];
 });
 
+const handleLogout = async () => {
+  try {
+    await signOut(auth);
+    setCurrentPage("home");
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 useEffect(() => {
   localStorage.setItem("cartItems", JSON.stringify(cartItems));
 }, [cartItems]);
+
+useEffect(() => {
+  const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    setUser(currentUser);
+  });
+
+ 
+
+  return unsubscribe;
+}, []);
 
   return (
 
@@ -57,10 +81,6 @@ useEffect(() => {
       )}
 
       {currentPage === "login" && <Login onNavigate={setCurrentPage} />}
-
-      {currentPage === "userLogin" && (<UserLogin onNavigate={setCurrentPage} />)}
-
-      {currentPage === "adminLogin" && (<AdminLogin onNavigate={setCurrentPage} />)}
 
       {currentPage === "register" && (<Register onNavigate={setCurrentPage} />)}
 
