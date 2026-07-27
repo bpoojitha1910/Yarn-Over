@@ -12,10 +12,6 @@ import Cart from './pages/cart';
 
 import Login from './pages/Login';
 
-import UserLogin from './pages/userLogin';
-
-import AdminLogin from './pages/AdminLogin';
-
 import Register from './pages/register';
 
 import AdminDashboard from './pages/AdminDashboard';
