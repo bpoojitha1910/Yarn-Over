@@ -286,21 +286,24 @@ zIndex: 10,
 }}
 >
 <a
-href="https://instagram.com"
-target="_blank"
-rel="noreferrer"
-style={{
-color: "#C05A5A",
-fontSize: "22px",
-fontWeight: 700,
-textDecoration: "none",
-fontFamily: "'Playfair Display', serif",
-position: "relative",
-top: "-12px",
-}}
->
-@__yarn_over__
-</a>
+        href="https://www.instagram.com/__yarn_over__/"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{
+          position: "absolute",
+
+          bottom: "40px",
+          right: "70px",
+          color: "#CB6565",
+          textDecoration: "none",
+          fontFamily: "'Playfair Display', serif",
+          fontSize: "25px",
+          fontWeight: "500",
+          cursor: "pointer",
+        }}
+      >
+        @__yarn_over__
+      </a>
 </div>
 </div>
 );

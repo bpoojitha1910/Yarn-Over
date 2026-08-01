@@ -64,14 +64,14 @@ export default function Collections({
     <div
       style={{
         minHeight: "100vh",
-        width: "100vw",
+        width: "100%",
         position: "relative",
         overflowX: "hidden",
+        overflowY: "auto",
         fontFamily: "'Playfair Display', serif",
         display: "flex",
         flexDirection: "column",
-        justifyContent: "space-between",
-        padding: "24px 40px",
+        padding: "40px",
         boxSizing: "border-box",
         margin: 0,
       }}
@@ -83,9 +83,9 @@ export default function Collections({
         style={{
           position: "absolute",
           top: 0,
+          right: 0,
+          bottom: 0,
           left: 0,
-          width: "100vw",
-          height: "100vh",
           objectFit: "cover",
           zIndex: 0,
           opacity: 0.35,
@@ -342,15 +342,19 @@ export default function Collections({
         }}
       >
         <a
-          href="https://instagram.com"
+          href="https://www.instagram.com/__yarn_over__/"
           target="_blank"
-          rel="noreferrer"
+          rel="noopener noreferrer"
           style={{
+            position: "absolute",
+            bottom: "40px",
+            right: "100px",
             color: "#CB6565",
-            fontSize: "22px",
-            fontWeight: 700,
             textDecoration: "none",
             fontFamily: "'Playfair Display', serif",
+            fontSize: "25px",
+            fontWeight: "500",
+            cursor: "pointer",
           }}
         >
           @__yarn_over__

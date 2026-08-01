@@ -55,7 +55,7 @@ export default function Reviews({ onNavigate }) {
       style={{
         backgroundColor: "#FFF2F4",
         minHeight: "100vh",
-        width: "100vw",
+        width: "100%",
         position: "relative",
         overflowX: "hidden",
         overflowY: "auto",
@@ -63,7 +63,7 @@ export default function Reviews({ onNavigate }) {
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
-        padding: "30px 40px",
+        padding: "40px",
         boxSizing: "border-box",
         margin: 0,
       }}
@@ -75,9 +75,9 @@ export default function Reviews({ onNavigate }) {
         style={{
           position: "absolute",
           top: 0,
+          right: 0,
+          bottom: 0,
           left: 0,
-          width: "100vw",
-          height: "100%",
           objectFit: "cover",
           zIndex: 0,
           opacity: 0.35,
@@ -351,20 +351,24 @@ export default function Reviews({ onNavigate }) {
           zIndex: 10,
         }}
       >
-        <a
-          href="https://instagram.com"
-          target="_blank"
-          rel="noreferrer"
-          style={{
-            color: "#CB6565",
-            fontSize: "22px",
-            fontWeight: 700,
-            textDecoration: "none",
-            fontFamily: "'Playfair Display', serif",
-          }}
-        >
-          @__yarn_over__
-        </a>
+       <a
+        href="https://www.instagram.com/__yarn_over__/"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{
+          position: "absolute",
+          bottom: "25px",
+          right: "50px",
+          color: "#CB6565",
+          textDecoration: "none",
+          fontFamily: "'Playfair Display', serif",
+          fontSize: "25px",
+          fontWeight: "500",
+          cursor: "pointer",
+        }}
+      >
+      @__yarn_over__
+      </a>
       </div>
     </div>
   );

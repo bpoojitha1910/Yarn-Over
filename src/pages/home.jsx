@@ -49,8 +49,23 @@ export default function Home({ onNavigate, user, handleLogout }) {
         </nav>
       </section>
 
-      <a className="instagram-link" href="https://instagram.com" target="_blank" rel="noreferrer">
-        our instagram handle: @__yarn_over__
+      <a
+        href="https://www.instagram.com/__yarn_over__/"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{
+          position: "absolute",
+          top: "30px",
+          right: "24px",
+          color: "#CB6565",
+          textDecoration: "none",
+          fontFamily: "'Playfair Display', serif",
+          fontSize: "22px",
+          fontWeight: "650",
+          cursor: "pointer",
+        }}
+      >
+        our instagram handle:@__yarn_over__
       </a>
 
       <style>{`
@@ -71,9 +86,10 @@ export default function Home({ onNavigate, user, handleLogout }) {
           margin: 0 auto;
           display: flex;
           flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          padding: clamp(10rem, 27vh, 18rem) 1.5rem 8rem;
+          transform: translateX(10%);
+          margin-bottom: 0rem;
+          margin-top: 1.5rem;
+          padding: clamp(12rem, 35vh, 24rem) 1.5rem 8rem;
         }
         .home-copy { text-align: center; color: #CB6565; }
         .home-copy h1 {
@@ -85,14 +101,12 @@ export default function Home({ onNavigate, user, handleLogout }) {
           font-weight: 700;
         }
         .home-copy p {
-          margin: .6rem 0 0;
+          margin: 1.4rem auto 0;
           font-size: clamp(1.4rem, 2.2vw, 2.1rem);
           font-weight: 500;
           font-style: normal;
           line-height: 1.45;
           max-width: 780px;
-          margin-left: auto;
-          margin-right: auto;
           font-family: 'Playfair Display', Georgia, serif;
         }
         .home-nav {

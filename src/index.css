@@ -23,6 +23,10 @@ html, body {
   overflow-x: hidden !important;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   line-height: 1.6;
   font-size: 16px;
