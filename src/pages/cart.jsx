@@ -557,56 +557,39 @@ export default function Cart({
                     gap: "12px",
                   }}
                 >
-                  <p style={{ margin: 0, fontSize: "14px", fontWeight: 700, color: "#C05A5A" }}>
-                    Select UPI App:
-                  </p>
+                  {paymentMethod === "UPI" && (
+  <div
+    style={{
+      marginLeft: "24px",
+      padding: "16px",
+      background: "#FFF",
+      borderRadius: "16px",
+      border: "1px solid #E5B2B8",
+      color: "#C05A5A",
+      fontSize: "14px",
+      lineHeight: "1.6",
+    }}
+  >
+    <strong>Secure Online Payment</strong>
 
-                  <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
-                    {["Google Pay", "PhonePe", "Paytm"].map((app) => (
-                      <button
-                        key={app}
-                        type="button"
-                        onClick={() => {
-                          setSelectedUpiApp(app);
-                          setUpiId("");
-                        }}
-                        style={{
-                          padding: "8px 12px",
-                          borderRadius: "10px",
-                          border: selectedUpiApp === app ? "2px solid #C05A5A" : "1px solid #DDD",
-                          background: selectedUpiApp === app ? "#FFF2F4" : "#FFF",
-                          color: selectedUpiApp === app ? "#C05A5A" : "#444",
-                          cursor: "pointer",
-                          fontSize: "13px",
-                          fontWeight: selectedUpiApp === app ? "bold" : "normal",
-                          fontFamily: "'Playfair Display', serif",
-                        }}
-                      >
-                        {app}
-                      </button>
-                    ))}
-                  </div>
+    <p style={{ margin: "10px 0 0" }}>
+      After you click <b>Place Order</b>, a secure Razorpay payment window
+      will open where you can pay using:
+    </p>
 
-                  <div style={{ textAlign: "center", fontSize: "12px", color: "#888", margin: "2px 0" }}>
-                    — OR Enter VPA / UPI ID —
-                  </div>
+    <ul style={{ marginTop: "8px", paddingLeft: "18px" }}>
+      <li>Google Pay</li>
+      <li>PhonePe</li>
+      <li>Paytm</li>
+      <li>Any UPI App</li>
+      <li>Debit / Credit Card</li>
+    </ul>
 
-                  <input
-                    placeholder="e.g. mobileNumber@upi"
-                    value={upiId}
-                    onChange={(e) => {
-                      setUpiId(e.target.value);
-                      setSelectedUpiApp("");
-                    }}
-                    style={{
-                      padding: "10px 12px",
-                      borderRadius: "10px",
-                      border: "1px solid #E5B2B8",
-                      outline: "none",
-                      fontSize: "14px",
-                      fontFamily: "'Playfair Display', serif",
-                    }}
-                  />
+    <p style={{ marginTop: "10px", fontWeight: "bold" }}>
+      Your order will be confirmed only after successful payment.
+    </p>
+  </div>
+)}
                 </div>
               )}
 
