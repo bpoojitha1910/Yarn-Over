@@ -1,114 +1,129 @@
-import React from "react";
+import Navbar from "../components/Navbar";
 
-export default function Navbar({ activePage, onNavigate, cartCount = 0 }) {
+export default function Home({ onNavigate, cartCount }) {
   return (
-    <header className="navbar-container">
-      <style>{`
-        .navbar-container {
-          position: relative;
-          z-index: 100;
-          background: rgba(255, 255, 255, 0.9);
-          backdrop-filter: blur(10px);
-          padding: 15px clamp(20px, 5vw, 40px);
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          flex-wrap: wrap;
-          gap: 15px;
-          box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-          font-family: 'Playfair Display', serif;
-        }
+    <div
+      style={{
+        backgroundColor: "#FFF2F4",
+        minHeight: "100vh",
+        width: "100vw",
+        position: "relative",
+        overflowX: "hidden",
+        display: "flex",
+        flexDirection: "column",
+        fontFamily: "'Playfair Display', serif",
+        boxSizing: "border-box",
+      }}
+    >
+      {/* Background Pattern */}
+      <img
+        src="/YarnOver21.png"
+        alt="Background Pattern"
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          opacity: 0.35,
+          zIndex: 0,
+          pointerEvents: "none",
+        }}
+      />
 
-        .brand-logo {
-          font-size: clamp(1.5rem, 4vw, 2.2rem);
-          font-weight: 700;
-          color: #C05A5A;
-          cursor: pointer;
-          margin: 0;
-        }
+      {/* Structured Navbar Component */}
+      <div style={{ position: "relative", zIndex: 10 }}>
+        <Navbar activePage="home" onNavigate={onNavigate} cartCount={cartCount} />
+      </div>
 
-        .nav-links {
-          display: flex;
-          align-items: center;
-          gap: clamp(15px, 3vw, 30px);
-          flex-wrap: wrap;
-        }
-
-        .nav-btn {
-          background: none;
-          border: none;
-          color: #555;
-          font-size: clamp(0.95rem, 2vw, 1.1rem);
-          font-weight: 600;
-          cursor: pointer;
-          padding: 6px 12px;
-          border-radius: 12px;
-          transition: all 0.2s ease;
-          font-family: 'Playfair Display', serif;
-        }
-
-        .nav-btn:hover, .nav-btn.active {
-          color: #C05A5A;
-          background: #FFF2F4;
-        }
-
-        .cart-badge {
-          background: #C05A5A;
-          color: white;
-          border-radius: 50%;
-          padding: 2px 8px;
-          font-size: 0.85rem;
-          margin-left: 6px;
-        }
-
-        @media (max-width: 650px) {
-          .navbar-container {
-            justify-content: center;
-            text-align: center;
-          }
-          .nav-links {
-            justify-content: center;
-            width: 100%;
-          }
-        }
-      `}</style>
-
-      <h1 className="brand-logo" onClick={() => onNavigate("home")}>
-        Yarn Over 🧶
-      </h1>
-
-      <nav className="nav-links">
-        <button
-          className={`nav-btn ${activePage === "home" ? "active" : ""}`}
-          onClick={() => onNavigate("home")}
+      {/* Hero / Main Content Section */}
+      <main
+        style={{
+          position: "relative",
+          zIndex: 2,
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          textAlign: "center",
+          padding: "60px 20px",
+          boxSizing: "border-box",
+        }}
+      >
+        <div
+          style={{
+            backgroundColor: "rgba(239, 209, 214, 0.88)",
+            backdropFilter: "blur(6px)",
+            padding: "50px 40px",
+            borderRadius: "35px",
+            border: "2px dashed #CB6565",
+            maxWidth: "700px",
+            width: "100%",
+            boxShadow: "0 10px 30px rgba(0,0,0,0.06)",
+            boxSizing: "border-box",
+          }}
         >
-          Home
-        </button>
-        <button
-          className={`nav-btn ${activePage === "collections" ? "active" : ""}`}
-          onClick={() => onNavigate("collections")}
-        >
-          Collections
-        </button>
-        <button
-          className={`nav-btn ${activePage === "cart" ? "active" : ""}`}
-          onClick={() => onNavigate("cart")}
-        >
-          Cart {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
-        </button>
-        <button
-          className={`nav-btn ${activePage === "myorders" ? "active" : ""}`}
-          onClick={() => onNavigate("myorders")}
-        >
-          Orders
-        </button>
-        <button
-          className={`nav-btn ${activePage === "login" ? "active" : ""}`}
-          onClick={() => onNavigate("login")}
-        >
-          Account
-        </button>
-      </nav>
-    </header>
+          <h2
+            style={{
+              color: "#CB6565",
+              fontSize: "clamp(2rem, 5vw, 3rem)",
+              fontWeight: 700,
+              margin: "0 0 15px 0",
+            }}
+          >
+            Where Every Stitch Tells a Story.
+          </h2>
+          <p
+            style={{
+              color: "#666",
+              fontSize: "clamp(1rem, 2vw, 1.25rem)",
+              lineHeight: 1.6,
+              marginBottom: "30px",
+            }}
+          >
+            Handmade with love, cozy aesthetics, and unique craftsmanship tailored just for you. Explore our collection of custom crochet and handcrafted treasures.
+          </p>
+
+          <div style={{ display: "flex", gap: "15px", justifyContent: "center", flexWrap: "wrap" }}>
+            <button
+              onClick={() => onNavigate("collections")}
+              style={{
+                backgroundColor: "#CB6565",
+                color: "white",
+                border: "none",
+                padding: "14px 28px",
+                borderRadius: "16px",
+                fontSize: "1.1rem",
+                fontWeight: 700,
+                cursor: "pointer",
+                fontFamily: "'Playfair Display', serif",
+                boxShadow: "0 4px 15px rgba(203, 101, 101, 0.3)",
+                transition: "transform 0.2s ease",
+              }}
+            >
+              Shop Collections 🧶
+            </button>
+            <button
+              onClick={() => onNavigate("customOrders")}
+              style={{
+                backgroundColor: "#FFFFFF",
+                color: "#CB6565",
+                border: "2px solid #CB6565",
+                padding: "14px 28px",
+                borderRadius: "16px",
+                fontSize: "1.1rem",
+                fontWeight: 700,
+                cursor: "pointer",
+                fontFamily: "'Playfair Display', serif",
+              }}
+            >
+              Request Custom Order ✨
+            </button>
+          </div>
+        </div>
+      </main>
+    </div>
   );
 }

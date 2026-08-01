@@ -1,261 +1,154 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
 export default function Home({ onNavigate, user, handleLogout }) {
-const [scale, setScale] = useState(1);
-const [showMenu, setShowMenu] = useState(false);
-useEffect(() => {
-document.body.style.backgroundColor = '#FAF4EB';
-document.body.style.margin = '0';
-document.body.style.padding = '0';
-document.body.style.overflow = 'hidden';
-const root = document.getElementById('root');
-if (root) {
-root.style.maxWidth = '100%';
-root.style.width = '100vw';
-root.style.margin = '0';
-root.style.padding = '0';
-}
-function handleResize() {
-const scaleX = window.innerWidth / 1440;
-const scaleY = window.innerHeight / 1024;
-setScale(Math.min(scaleX, scaleY));
-}
-handleResize();
-window.addEventListener('resize', handleResize);
-return () => window.removeEventListener('resize', handleResize);
-}, []);
-const navButtonStyle = {
-background: "none",
-border: "none",
-color: "#1A1A1A",
-fontSize: "29px",
-fontWeight: 650,
-fontFamily: "'Playfair Display', serif",
-cursor: "pointer",
-padding: "8px 12px",
-transition: "color 0.2s ease",
-};
-const dropdownButtonStyle = {
-width: "100%",
-border: "none",
-background: "none",
-padding: "10px",
-textAlign: "left",
-cursor: "pointer",
-color: "#CB6565",
-fontSize: "25px",
-fontFamily: "'Playfair Display', serif",
-};
-return (
-<div
-style={{
-width: '100vw',
-height: '100vh',
-position: 'relative',
-overflow: 'hidden',
-margin: 0,
-padding: 0,
-backgroundColor: '#FAF4EB',
-}}
->
-<img
-src="/YarnOver1.png"
-alt="Yarn Over Background"
-style={{
-position: 'absolute',
-top: 0,
-left: 0,
-width: '100vw',
-height: '100vh',
-objectFit: 'cover',
-zIndex: 0,
-}}
-/>
-<div
-style={{
-position: 'absolute',
-inset: 0,
-display: 'flex',
-alignItems: 'center',
-justifyContent: 'center',
-zIndex: 10,
-}}
->
-<div
-style={{
-width: '1440px',
-height: '1024px',
-position: 'relative',
-transform: `scale(${scale})`,
-transformOrigin: 'center center',
-flexShrink: 0,
-fontFamily: "'Playfair Display', serif",
-display: 'flex',
-flexDirection: 'column',
-alignItems: 'center',
-justifyContent: 'center',
-}}
->
-<div
-style={{
-display: 'flex',
-flexDirection: 'column',
-alignItems: 'center',
-justifyContent: 'center',
-textAlign: 'center',
-width: '1000px',
-marginTop: '180px',
-}}
->
-<h1
-style={{
-fontSize: '90px',
-fontWeight: 700,
-fontFamily: "'Playfair Display', serif",
-color: '#CB6565',
-margin: '10px 0 10px 70px',
-lineHeight: 1.4,
-letterSpacing: '4px',
-position: 'relative',
-}}
->
-Yarn Over
-</h1>
-<p
-style={{
-fontSize: '45px',
-fontWeight: 600,
-fontStyle: 'italic',
-fontFamily: "'Playfair Display', serif",
-color: '#CB6565',
-margin: '0 0 60px 80px',
-}}
->
-Where Every Stitch Tells a Story.
-</p>
-<div
-style={{
-width: '100%',
-maxWidth: '700px',
-display: 'flex',
-gap: '100px',
-marginRight: '-700px',
-justifyContent: 'flex-end',
-marginTop: '20px',
-paddingRight: '80px',
-}}
-><div style={{ position: "relative" }}>
-{user ? (
-<>
-<button
-onClick={() => setShowMenu(!showMenu)}
-style={navButtonStyle}
-onMouseEnter={(e) => (e.currentTarget.style.color = "#CB6565")}
-onMouseLeave={(e) => (e.currentTarget.style.color = "#1A1A1A")}
->
-👤 My Account ▼
-</button>
-{showMenu && (
-<div
-style={{
-position: "absolute",
-top: "45px",
-left: 0,
-background: "#fff",
-borderRadius: "15px",
-boxShadow: "0 8px 20px rgba(0,0,0,0.15)",
-minWidth: "200px",
-minHeight:"135px",
-zIndex: 999,
-padding: "10px",
-}}
->
-<button
-style={dropdownButtonStyle}
-onClick={() => {
-setShowMenu(false);
-onNavigate("myorders");
-}}
->
-📦 My Orders
-</button>
-<button
-style={dropdownButtonStyle}
-onClick={() => {
-setShowMenu(false);
-handleLogout();
-}}
->
-🚪 Logout
-</button>
-</div>
-)}
-</>
-) : (
-<button
-onClick={() => onNavigate("login")}
-style={navButtonStyle}
-onMouseEnter={(e) => (e.currentTarget.style.color = "#CB6565")}
-onMouseLeave={(e) => (e.currentTarget.style.color = "#1A1A1A")}
->
-Login
-</button>
-)}
-</div>
-<button
-onClick={() => onNavigate("collections")}
-style={navButtonStyle}
-onMouseEnter={(e) => (e.currentTarget.style.color = "#CB6565")}
-onMouseLeave={(e) => (e.currentTarget.style.color = "#1A1A1A")}
->
-Our Collections
-</button>
-<button
-onClick={() => onNavigate("custom-orders")}
-style={navButtonStyle}
-onMouseEnter={(e) => (e.currentTarget.style.color = "#CB6565")}
-onMouseLeave={(e) => (e.currentTarget.style.color = "#1A1A1A")}
->
-Custom Orders
-</button>
-<button
-onClick={() => onNavigate("reviews")}
-style={navButtonStyle}
-onMouseEnter={(e) => (e.currentTarget.style.color = "#CB6565")}
-onMouseLeave={(e) => (e.currentTarget.style.color = "#1A1A1A")}
->
-Reviews
-</button>
-<button
-onClick={() => onNavigate("cart")}
-style={navButtonStyle}
-onMouseEnter={(e) => (e.currentTarget.style.color = "#CB6565")}
-onMouseLeave={(e) => (e.currentTarget.style.color = "#1A1A1A")}
->
-🛒 Cart
-</button>
-</div>
-</div>
-<a
-href="https://instagram.com"
-target="_blank"
-rel="noreferrer"
-style={{
-position: 'absolute',
-right:'-29px',
-bottom: '90px',
-top: 'auto',
-fontSize: '26px',
-fontWeight: 700,
-fontFamily: "'Playfair Display', serif",
-color: '#CB6565',
-textDecoration: 'none',
-cursor: 'pointer',
-}}
->
-our instagram handle:@__yarn_over__
-</a>
-</div>
-</div>
-</div>
-);
+  const [showMenu, setShowMenu] = useState(false);
+
+  useEffect(() => {
+    document.body.style.backgroundColor = '#FAF4EB';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, []);
+
+  const links = [
+    ['Our Collections', 'collections'],
+    ['Custom Orders', 'custom-orders'],
+    ['Reviews', 'reviews'],
+    ['🛒 Cart', 'cart'],
+  ];
+
+  return (
+    <main className="home-page">
+      <section className="home-content" aria-label="Yarn Over home">
+        <div className="home-copy">
+          <h1>Yarn Over</h1>
+          <p>Where Every Stitch Tells a Story.</p>
+        </div>
+
+        <nav className="home-nav" aria-label="Main navigation">
+          <div className="account-menu">
+            {user ? (
+              <>
+                <button className="home-nav-button" onClick={() => setShowMenu((open) => !open)}>
+                  👤 My Account <span aria-hidden="true">▾</span>
+                </button>
+                {showMenu && (
+                  <div className="account-dropdown">
+                    <button onClick={() => { setShowMenu(false); onNavigate('myorders'); }}>📦 My Orders</button>
+                    <button onClick={() => { setShowMenu(false); handleLogout(); }}>🚪 Logout</button>
+                  </div>
+                )}
+              </>
+            ) : (
+              <button className="home-nav-button" onClick={() => onNavigate('login')}>Login</button>
+            )}
+          </div>
+          {links.map(([label, page]) => (
+            <button className="home-nav-button" key={page} onClick={() => onNavigate(page)}>{label}</button>
+          ))}
+        </nav>
+      </section>
+
+      <a className="instagram-link" href="https://instagram.com" target="_blank" rel="noreferrer">
+        our instagram handle: @__yarn_over__
+      </a>
+
+      <style>{`
+        .home-page {
+          position: relative;
+          isolation: isolate;
+          min-height: 100vh;
+          min-height: 100dvh;
+          overflow: hidden;
+          background: #FAF4EB url('/YarnOver1.png') center / cover no-repeat;
+          color: #1A1A1A;
+          font-family: 'Playfair Display', Georgia, serif;
+        }
+        .home-content {
+          width: min(76vw, 1080px);
+          min-height: 100vh;
+          min-height: 100dvh;
+          margin: 0 auto;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          padding: clamp(10rem, 27vh, 18rem) 1.5rem 8rem;
+        }
+        .home-copy { text-align: center; color: #CB6565; }
+        .home-copy h1 {
+          margin: 0;
+          font-size: clamp(2.75rem, 5vw, 4.6rem);
+          line-height: 1.1;
+          letter-spacing: .08em;
+        }
+        .home-copy p {
+          margin: .6rem 0 0;
+          font-size: clamp(1.4rem, 2.8vw, 2.7rem);
+          font-weight: 600;
+          font-style: italic;
+          line-height: 1.25;
+        }
+        .home-nav {
+          width: min(100%, 1000px);
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          align-items: center;
+          gap: .5rem clamp(1rem, 2.5vw, 2.75rem);
+          margin-top: clamp(2rem, 7vh, 4.5rem);
+        }
+        .home-nav-button {
+          padding: .35rem .2rem;
+          border: 0;
+          background: transparent;
+          color: #1A1A1A;
+          font: 650 clamp(1rem, 1.7vw, 1.55rem) / 1.2 'Playfair Display', Georgia, serif;
+          cursor: pointer;
+          white-space: nowrap;
+          transition: color .2s ease;
+        }
+        .home-nav-button:hover, .home-nav-button:focus-visible { color: #CB6565; }
+        .account-menu { position: relative; }
+        .account-dropdown {
+          position: absolute;
+          top: calc(100% + .5rem);
+          left: 50%;
+          z-index: 2;
+          width: 12rem;
+          padding: .45rem;
+          border-radius: .75rem;
+          background: #fff;
+          box-shadow: 0 .5rem 1.25rem rgba(0, 0, 0, .15);
+          transform: translateX(-50%);
+        }
+        .account-dropdown button {
+          width: 100%;
+          padding: .55rem;
+          border: 0;
+          background: transparent;
+          color: #CB6565;
+          text-align: left;
+          font: 600 1.1rem 'Playfair Display', Georgia, serif;
+          cursor: pointer;
+        }
+        .account-dropdown button:hover, .account-dropdown button:focus-visible { background: #FAF4EB; }
+        .instagram-link {
+          position: absolute;
+          right: clamp(1rem, 4vw, 4rem);
+          bottom: clamp(1rem, 5vh, 3.5rem);
+          color: #CB6565;
+          font: 700 clamp(.9rem, 1.5vw, 1.35rem) 'Playfair Display', Georgia, serif;
+          text-decoration: none;
+        }
+        .instagram-link:hover, .instagram-link:focus-visible { text-decoration: underline; }
+        @media (max-width: 767px) {
+          .home-page { overflow-y: auto; background-position: center; }
+          .home-content { width: 100%; min-height: 100dvh; padding: 13rem 1.25rem 7rem; justify-content: flex-start; }
+          .home-nav { flex-direction: column; margin-top: 2rem; gap: .6rem; }
+          .instagram-link { left: 1rem; right: 1rem; text-align: center; }
+        }
+      `}</style>
+    </main>
+  );
 }

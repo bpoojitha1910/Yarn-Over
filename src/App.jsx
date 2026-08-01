@@ -60,14 +60,15 @@ useEffect(() => {
 
  <div
 style={{
-height: "100vh",
- overflow: "hidden",
+minHeight: "100vh",
+ overflow: "auto",
  backgroundColor: "#FAF4EB",
  backgroundImage: "url('/YarnOver21.png')",
  backgroundRepeat: "no-repeat",
  backgroundPosition: "center center",
  backgroundSize: "cover",
  backgroundAttachment: "fixed",
+ fontFamily: "'Playfair Display', Georgia, serif",
  }}
  >
 
