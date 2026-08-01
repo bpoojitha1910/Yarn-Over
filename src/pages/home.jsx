@@ -79,15 +79,21 @@ export default function Home({ onNavigate, user, handleLogout }) {
         .home-copy h1 {
           margin: 0;
           font-size: clamp(2.75rem, 5vw, 4.6rem);
-          line-height: 1.1;
-          letter-spacing: .08em;
+          line-height: 1.05;
+          letter-spacing: .04em;
+          font-family: 'Playfair Display', Georgia, serif;
+          font-weight: 800;
+          text-transform: uppercase;
         }
         .home-copy p {
           margin: .6rem 0 0;
-          font-size: clamp(1.4rem, 2.8vw, 2.7rem);
-          font-weight: 600;
-          font-style: italic;
-          line-height: 1.25;
+          font-size: clamp(1.4rem, 2.2vw, 2.1rem);
+          font-weight: 500;
+          font-style: normal;
+          line-height: 1.45;
+          max-width: 780px;
+          margin-left: auto;
+          margin-right: auto;
         }
         .home-nav {
           width: min(100%, 1000px);
@@ -95,18 +101,20 @@ export default function Home({ onNavigate, user, handleLogout }) {
           flex-wrap: wrap;
           justify-content: center;
           align-items: center;
-          gap: .5rem clamp(1rem, 2.5vw, 2.75rem);
+          gap: .75rem clamp(1rem, 2.5vw, 2.75rem);
           margin-top: clamp(2rem, 7vh, 4.5rem);
         }
         .home-nav-button {
-          padding: .35rem .2rem;
-          border: 0;
-          background: transparent;
+          padding: .75rem 1.25rem;
+          border: 1px solid rgba(203, 101, 101, 0.25);
+          background: rgba(255, 255, 255, 0.82);
           color: #1A1A1A;
-          font: 650 clamp(1rem, 1.7vw, 1.55rem) / 1.2 'Playfair Display', Georgia, serif;
+          font: 700 clamp(0.98rem, 1.4vw, 1.35rem) / 1.2 'Playfair Display', Georgia, serif;
           cursor: pointer;
           white-space: nowrap;
-          transition: color .2s ease;
+          border-radius: 18px;
+          box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+          transition: transform .2s ease, color .2s ease, background-color .2s ease;
         }
         .home-nav-button:hover, .home-nav-button:focus-visible { color: #CB6565; }
         .account-menu { position: relative; }
