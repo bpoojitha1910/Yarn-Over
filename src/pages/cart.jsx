@@ -62,11 +62,7 @@ export default function Cart({
       return;
     }
 
-    if (paymentMethod === "UPI" && !selectedUpiApp && !upiId.trim()) {
-      alert("Please select a UPI app or enter your UPI ID.");
-      return;
-    }
-
+  
     try {
       const user = auth.currentUser;
 
