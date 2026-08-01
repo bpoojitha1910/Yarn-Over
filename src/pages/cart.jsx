@@ -70,37 +70,98 @@ export default function Cart({
     try {
       const user = auth.currentUser;
 
-if (!user) {
-  alert("Please log in before placing an order.");
-  return;
-}
-      const response = await fetch(`${API_URL}/orders`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userId: user.uid,
-          userEmail: user.email,
-          customer,
-          cartItems,
-          total,
-          paymentMethod,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        alert(data.error);
+      if (!user) {
+        alert("Please log in before placing an order.");
         return;
       }
 
-      setOrderSuccess(data);
+      // Helper function to submit order to backend
+      const submitOrder = async (paymentDetails = {}) => {
+        const response = await fetch(`${API_URL}/orders`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: user.uid,
+            userEmail: user.email,
+            customer,
+            cartItems,
+            total,
+            paymentMethod,
+            paymentDetails,
+          }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          alert(data.error || "Failed to place order.");
+          return;
+        }
+
+        setOrderSuccess(data);
+      };
+
+      // Handle UPI via Razorpay
+      if (paymentMethod === "UPI") {
+        const orderResponse = await fetch(
+          `${API_URL}/create-razorpay-order`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              amount: total,
+            }),
+          }
+        );
+
+        const razorpayOrder = await orderResponse.json();
+
+        if (!orderResponse.ok) {
+          alert(razorpayOrder.error || "Failed to initialize payment.");
+          return;
+        }
+
+        const options = {
+          key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+          amount: razorpayOrder.amount,
+          currency: razorpayOrder.currency,
+          name: "Yarn Over",
+          description: "Order Payment",
+          order_id: razorpayOrder.id,
+          handler: async function (response) {
+            // Razorpay payment successful, now save order
+            await submitOrder({
+              razorpayPaymentId: response.razorpay_payment_id,
+              razorpayOrderId: response.razorpay_order_id,
+              razorpaySignature: response.razorpay_signature,
+            });
+          },
+          prefill: {
+            name: customer.name,
+            email: user.email,
+            contact: customer.phone,
+          },
+          theme: {
+            color: "#C05A5A",
+          },
+        };
+
+        const rzp = new window.Razorpay(options);
+        rzp.open();
+      } else {
+        // Handle Cash on Delivery (COD)
+        await submitOrder();
+      }
+
     } catch (error) {
-      console.error(error);
-      alert("Something went wrong while placing your order. Please try again.");
-    }
+  console.error(error);
+  alert("Something went wrong while placing your order. Please try again.");
+
+}
   };
 
   return (
@@ -443,7 +504,7 @@ if (!user) {
               borderRadius: "25px",
               padding: "30px",
               boxShadow: "0 4px 15px rgba(0,0,0,0.02)",
-               overflowY: "auto",
+              overflowY: "auto",
               overflowX: "120px",
               maxHeight: "330px",
               marginBottom: 0,
@@ -579,89 +640,86 @@ if (!user) {
         </div>
 
       </div>
+
       {orderSuccess && (
-  <div
-    style={{
-      position: "fixed",
-      inset: 0,
-      background: "rgba(0,0,0,0.4)",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      zIndex: 9999,
-    }}
-  >
-    <div
-      style={{
-        background: "#FFF",
-        borderRadius: "25px",
-        padding: "35px",
-        width: "420px",
-        textAlign: "center",
-        boxShadow: "0 10px 30px rgba(0,0,0,0.15)",
-      }}
-    >
-      <h2 style={{ color: "#C05A5A", marginTop: 0 }}>
-        🌸 Order Placed!
-      </h2>
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0,0,0,0.4)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 9999,
+          }}
+        >
+          <div
+            style={{
+              background: "#FFF",
+              borderRadius: "25px",
+              padding: "35px",
+              width: "420px",
+              textAlign: "center",
+              boxShadow: "0 10px 30px rgba(0,0,0,0.15)",
+            }}
+          >
+            <h2 style={{ color: "#C05A5A", marginTop: 0 }}>
+              🌸 Order Placed!
+            </h2>
 
-      <p>
-        Thank you for shopping with <b>Yarn Over</b> 💖
-      </p>
+            <p>
+              Thank you for shopping with <b>Yarn Over</b> 💖
+            </p>
 
-      <p>
-        <b>Order ID</b>
-      </p>
+            <p>
+              <b>Order ID</b>
+            </p>
 
-      <p
-        style={{
-          color: "#C05A5A",
-          fontWeight: "bold",
-          fontSize: "18px",
-        }}
-      >
-        {orderSuccess.orderId}
-      </p>
+            <p
+              style={{
+                color: "#C05A5A",
+                fontWeight: "bold",
+                fontSize: "18px",
+              }}
+            >
+              {orderSuccess.orderId}
+            </p>
 
-      <p>
-        We'll contact you soon to confirm your order.
-      </p>
+            <p>
+              We'll contact you soon to confirm your order.
+            </p>
 
-      <button
-        onClick={() => {
-  setOrderSuccess(null);
-
-  setCartItems([]);
-
-  setCustomer({
-    name: "",
-    phone: "",
-    address: "",
-    pincode: "",
-  });
-
-  setPaymentMethod("");
-  setSelectedUpiApp("");
-  setUpiId("");
-
-  onNavigate("home");
-}}
-        style={{
-          marginTop: "20px",
-          background: "#C05A5A",
-          color: "white",
-          border: "none",
-          padding: "12px 24px",
-          borderRadius: "15px",
-          cursor: "pointer",
-          fontWeight: "bold",
-        }}
-      >
-        Continue Shopping
-      </button>
-    </div>
-  </div>
-)}
+            <button
+              onClick={() => {
+                setOrderSuccess(null);
+                setCartItems([]);
+                setCustomer({
+                  name: "",
+                  phone: "",
+                  address: "",
+                  pincode: "",
+                });
+                setPaymentMethod("");
+                setSelectedUpiApp("");
+                setUpiId("");
+                onNavigate("home");
+              }}
+              style={{
+                marginTop: "20px",
+                background: "#C05A5A",
+                color: "white",
+                border: "none",
+                padding: "12px 24px",
+                borderRadius: "15px",
+                cursor: "pointer",
+                fontWeight: "bold",
+              }}
+            >
+              Continue Shopping
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
-} 
+}
