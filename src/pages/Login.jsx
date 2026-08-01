@@ -50,7 +50,7 @@ export default function Login({ onNavigate }) {
   return (
     <div
       style={{
-        backgroundColor: "#FFF2F4",
+        backgroundColor: "transparent",
         minHeight: "100vh",
         width: "100vw",
         position: "relative",
@@ -62,6 +62,10 @@ export default function Login({ onNavigate }) {
         fontFamily: "'Playfair Display', serif",
         padding: "40px 20px",
         boxSizing: "border-box",
+        backgroundImage: "url('/YarnOver21.png')",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
+        backgroundSize: "cover",
       }}
     >
       {/* Background Pattern */}
@@ -104,15 +108,16 @@ export default function Login({ onNavigate }) {
         style={{
           position: "relative",
           zIndex: 2,
-          backgroundColor: "rgba(239, 209, 214, 0.92)",
-          backdropFilter: "blur(6px)",
+          backgroundColor: "rgba(239, 209, 214, 0.18)",
+          backdropFilter: "blur(5px)",
           width: "90%",
           maxWidth: "450px",
           margin: "0 auto",
           padding: "35px 30px",
           borderRadius: "35px",
-          boxShadow: "0 8px 25px rgba(0,0,0,0.1)",
+          boxShadow: "0 8px 25px rgba(0,0,0,0.08)",
           boxSizing: "border-box",
+          border: "1px solid rgba(203, 101, 101, 0.18)",
         }}
       >
         {/* Header Title */}
