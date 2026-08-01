@@ -82,8 +82,7 @@ export default function Home({ onNavigate, user, handleLogout }) {
           line-height: 1.05;
           letter-spacing: .04em;
           font-family: 'Playfair Display', Georgia, serif;
-          font-weight: 800;
-          text-transform: uppercase;
+          font-weight: 700;
         }
         .home-copy p {
           margin: .6rem 0 0;
@@ -94,6 +93,7 @@ export default function Home({ onNavigate, user, handleLogout }) {
           max-width: 780px;
           margin-left: auto;
           margin-right: auto;
+          font-family: 'Playfair Display', Georgia, serif;
         }
         .home-nav {
           width: min(100%, 1000px);
@@ -109,7 +109,10 @@ export default function Home({ onNavigate, user, handleLogout }) {
           border: 1px solid rgba(203, 101, 101, 0.25);
           background: rgba(255, 255, 255, 0.82);
           color: #1A1A1A;
-          font: 700 clamp(0.98rem, 1.4vw, 1.35rem) / 1.2 'Playfair Display', Georgia, serif;
+          font-family: 'Playfair Display', Georgia, serif;
+          font-size: clamp(0.98rem, 1.4vw, 1.35rem);
+          font-weight: 700;
+          line-height: 1.2;
           cursor: pointer;
           white-space: nowrap;
           border-radius: 18px;
