@@ -6,22 +6,27 @@ export default function Login({ onNavigate }) {
   const [isAdminMode, setIsAdminMode] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [adminCode, setAdminCode] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // 🔑 Set your hardcoded secret code here!
+  const HARDCODED_ADMIN_CODE = "1999";
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
+      // 1. Check the hardcoded Admin Secret Key first if in Admin Mode
+      if (isAdminMode && adminCode.trim() !== HARDCODED_ADMIN_CODE) {
+        throw new Error("Invalid Admin Passcode.");
+      }
 
+      // 2. Authenticate user credentials with Firebase
+      await signInWithEmailAndPassword(auth, email, password);
+
+      // 3. Route user based on selected tab
       if (isAdminMode) {
-        // OPTIONAL: Check if the user is actually an admin before routing
-        // e.g., using Firebase Custom Claims or fetching user role from Firestore:
-        // const idTokenResult = await user.getIdTokenResult();
-        // if (!idTokenResult.claims.admin) throw new Error("Unauthorized admin access.");
-
         onNavigate?.("adminDashboard");
       } else {
         onNavigate?.("home");
@@ -102,7 +107,13 @@ export default function Login({ onNavigate }) {
       >
         {/* Header with Dividers */}
         <div style={{ textAlign: "center", marginBottom: "25px" }}>
-          <hr style={{ border: "none", borderTop: "2px dashed #CB6565", margin: "0 0 15px 0" }} />
+          <hr
+            style={{
+              border: "none",
+              borderTop: "2px dashed #CB6565",
+              margin: "0 0 15px 0",
+            }}
+          />
           <h1
             style={{
               color: "#CB6565",
@@ -113,7 +124,13 @@ export default function Login({ onNavigate }) {
           >
             Login
           </h1>
-          <hr style={{ border: "none", borderTop: "2px dashed #CB6565", margin: "15px 0 0 0" }} />
+          <hr
+            style={{
+              border: "none",
+              borderTop: "2px dashed #CB6565",
+              margin: "15px 0 0 0",
+            }}
+          />
         </div>
 
         {/* Role Selector Tabs */}
@@ -217,7 +234,7 @@ export default function Login({ onNavigate }) {
               style={{
                 width: "100%",
                 padding: "12px",
-                marginBottom: "18px",
+                marginBottom: isAdminMode ? "12px" : "18px",
                 borderRadius: "14px",
                 border: "2px solid #CB6565",
                 outline: "none",
@@ -226,6 +243,28 @@ export default function Login({ onNavigate }) {
                 boxSizing: "border-box",
               }}
             />
+
+            {/* Admin-Only Input */}
+            {isAdminMode && (
+              <input
+                type="password"
+                placeholder="Admin Passcode"
+                value={adminCode}
+                onChange={(e) => setAdminCode(e.target.value)}
+                required
+                style={{
+                  width: "100%",
+                  padding: "12px",
+                  marginBottom: "18px",
+                  borderRadius: "14px",
+                  border: "2px solid #CB6565",
+                  outline: "none",
+                  fontFamily: "'Playfair Display', serif",
+                  fontSize: "15px",
+                  boxSizing: "border-box",
+                }}
+              />
+            )}
 
             <button
               type="submit"

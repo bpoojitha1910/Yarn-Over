@@ -3,7 +3,6 @@ import cors from "cors";
 import dotenv from "dotenv";
 import crypto from "crypto";
 
-
 // 1. Initialize dotenv BEFORE using process.env
 dotenv.config();
 
@@ -72,11 +71,35 @@ app.post("/custom-orders", async (req, res) => {
     res.json({ message: "Custom order submitted successfully!" });
   } catch (error) {
     console.error("FIRESTORE ERROR:", error);
+    
     res.status(500).json({ error: error.message });
   }
 });
 
-// Main Order Processing (Stock Validation + Firestore DB Save + Razorpay Payment Order)
+// ----------------------------------------------------
+// NEW SIMPLIFIED FLOW ROUTES
+// ----------------------------------------------------
+
+// 1. Create Razorpay Order (Called BEFORE payment popup opens)
+app.post("/create-razorpay-order", async (req, res) => {
+  try {
+    const { amount } = req.body;
+
+    const options = {
+      amount: Math.round(amount * 100), // convert ₹ to paise
+      currency: "INR",
+      receipt: "receipt_" + Date.now(),
+    };
+
+    const order = await razorpay.orders.create(options);
+    res.json(order);
+  } catch (error) {
+    console.error("RAZORPAY ERROR:", error);
+    res.status(500).json({ error: "Could not initialize Razorpay order" });
+  }
+});
+
+// 2. Main Order Processing (Called AFTER successful payment, or for COD)
 app.post("/orders", async (req, res) => {
   try {
     const { userId, userEmail, customer, cartItems, total, paymentMethod } = req.body;
@@ -112,77 +135,21 @@ app.post("/orders", async (req, res) => {
       cartItems,
       total,
       paymentMethod,
-      paymentStatus: "Pending",
+      // If paymentMethod is ONLINE, we know it's paid because this endpoint 
+      // is only hit after the Razorpay success handler triggers on the frontend.
+      paymentStatus: paymentMethod === "ONLINE" ? "Paid" : "Pending",
       orderStatus: "Pending",
       createdAt: new Date(),
     });
 
-    // 3. Create Razorpay Payment Order if paymentMethod is Razorpay
-    let razorpayOrder = null;
-    if (paymentMethod === "Razorpay") {
-      const options = {
-        amount: Math.round(total * 100), // convert ₹ to paise
-        currency: "INR",
-        receipt: `receipt_${orderDoc.id}`,
-      };
-      razorpayOrder = await razorpay.orders.create(options);
-    }
-
     res.json({
       message: "Order placed successfully!",
       orderId: orderDoc.id,
-      razorpayOrder,
     });
   } catch (error) {
     console.error("ORDER CREATION ERROR:", error);
     res.status(500).json({ error: error.message });
   }
-});
-
-// Standalone Razorpay Order Creation Endpoint (if used separately on frontend)
-app.post("/api/create-order", async (req, res) => {
-  try {
-    const { amount } = req.body;
-
-    const options = {
-      amount: Math.round(amount * 100), // convert ₹ to paise
-      currency: "INR",
-      receipt: "receipt_" + Date.now(),
-    };
-
-    const order = await razorpay.orders.create(options);
-    res.json(order);
-  } catch (error) {
-    console.error("RAZORPAY ERROR:", error);
-    res.status(500).json({ error: error.message });
-  }
-});
-
-app.post("/api/verify-payment", (req, res) => {
-  const {
-    razorpay_order_id,
-    razorpay_payment_id,
-    razorpay_signature,
-  } = req.body;
-
-  const body = razorpay_order_id + "|" + razorpay_payment_id;
-
-  const expectedSignature = crypto
-    .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
-    .update(body)
-    .digest("hex");
-
-  if (expectedSignature === razorpay_signature) {
-    return res.json({
-      success: true,
-      message: "Payment verified",
-    });
-  }
-
-  return res.status(400).json({
-    success: false,
-    message: "Invalid signature",
-  });
 });
 
 const PORT = process.env.PORT || 5000;
