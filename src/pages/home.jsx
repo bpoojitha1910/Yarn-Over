@@ -50,20 +50,10 @@ export default function Home({ onNavigate, user, handleLogout }) {
       </section>
 
       <a
+        className="instagram-link"
         href="https://www.instagram.com/__yarn_over__/"
         target="_blank"
         rel="noopener noreferrer"
-        style={{
-          position: "absolute",
-          bottom: "42px",
-          right: "250px",
-          color: "#CB6565",
-          textDecoration: "none",
-          fontFamily: "'Playfair Display', serif",
-          fontSize: "22px",
-          fontWeight: "650",
-          cursor: "pointer",
-        }}
       >
         our instagram handle:@__yarn_over__
       </a>
@@ -86,7 +76,7 @@ export default function Home({ onNavigate, user, handleLogout }) {
           margin: 0 auto;
           display: flex;
           flex-direction: column;
-          transform: translateX(10%);
+          transform: translateX(8%);
           margin-bottom: 0rem;
           
           padding: clamp(12rem, 35vh, 24rem) 1.5rem 8rem;
@@ -160,8 +150,8 @@ export default function Home({ onNavigate, user, handleLogout }) {
         .account-dropdown button:hover, .account-dropdown button:focus-visible { background: #FAF4EB; }
         .instagram-link {
           position: absolute;
-          right: clamp(1rem, 4vw, 4rem);
           bottom: clamp(1rem, 5vh, 3.5rem);
+          right: clamp(1rem, 4vw, 4rem);
           color: #CB6565;
           font: italic 700 clamp(.9rem, 1.5vw, 1.35rem) 'Playfair Display', Georgia, serif;
           text-decoration: none;
@@ -172,7 +162,7 @@ export default function Home({ onNavigate, user, handleLogout }) {
           .home-content { width: 100%; min-height: 100dvh; padding: 13rem 1.25rem 7rem; justify-content: flex-start; }
           .home-nav { flex-direction: column; margin-top: 1.4rem; gap: .4rem; }
           .home-nav-button { padding: .65rem 1rem; }
-          .instagram-link { left: 1rem; right: 1rem; text-align: center; }
+          .instagram-link { left: 50%; right: auto; transform: translateX(-50%); text-align: center; }
         }
       `}</style>
     </main>
