@@ -54,6 +54,7 @@ export default function Home({ onNavigate, user, handleLogout }) {
         href="https://www.instagram.com/__yarn_over__/"
         target="_blank"
         rel="noopener noreferrer"
+        
       >
         our instagram handle:@__yarn_over__
       </a>
@@ -76,7 +77,7 @@ export default function Home({ onNavigate, user, handleLogout }) {
           margin: 0 auto;
           display: flex;
           flex-direction: column;
-          transform: translateX(8%);
+          transform: translateX(6%);
           margin-bottom: 0rem;
           
           padding: clamp(12rem, 35vh, 24rem) 1.5rem 8rem;
@@ -162,7 +163,7 @@ export default function Home({ onNavigate, user, handleLogout }) {
           .home-content { width: 100%; min-height: 100dvh; padding: 13rem 1.25rem 7rem; justify-content: flex-start; }
           .home-nav { flex-direction: column; margin-top: 1.4rem; gap: .4rem; }
           .home-nav-button { padding: .65rem 1rem; }
-          .instagram-link { left: 50%; right: auto; transform: translateX(-50%); text-align: center; }
+          .instagram-link { left: 45%; right: auto; transform: translateX(-50%); text-align: center; }
         }
       `}</style>
     </main>
