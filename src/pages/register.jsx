@@ -1,234 +1,153 @@
-﻿import { useState } from "react";
+﻿import React, { useState } from "react";
+import { auth } from "../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth, db } from "../firebase";
-import { doc, setDoc } from "firebase/firestore";
 
 export default function Register({ onNavigate }) {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const [name,setName] = useState("");
-  const [email,setEmail] = useState("");
-  const [password,setPassword] = useState("");
-
-  async function handleRegister(){
-    try{
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-
-      const user = userCredential.user;
-
-      await setDoc(doc(db,"users",user.uid),{
-        name:name,
-        email:email,
-        role:"user"
-      });
-
-      alert("Account created successfully 🌸");
-
-      onNavigate("userLogin");
-
-    }catch(error){
-      alert(error.message);
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      alert("Account created successfully!");
+      onNavigate("home");
+    } catch (err) {
+      alert(err.message);
     }
-  }
+  };
 
   return (
+    <div className="auth-container">
+      <style>{`
+        .auth-container {
+          min-height: 100vh;
+          background: #FFF2F4;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 20px;
+          font-family: 'Playfair Display', serif;
+          box-sizing: border-box;
+        }
 
-    <div
-      style={{
-        backgroundColor:"#fff2f4",
-        minHeight:"100vh",
-        
-        width:"100vw",
-        position:"relative",
-        overflow:"hidden",
-        fontFamily:"'Playfair Display', serif",
-        padding:"10px",
-        boxSizing:"border-box",
-      }}
-    >
+        .auth-card {
+          background: rgba(255, 255, 255, 0.95);
+          padding: clamp(25px, 5vw, 40px);
+          border-radius: 25px;
+          width: 100%;
+          max-width: 420px;
+          box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+          box-sizing: border-box;
+        }
 
-      <img
-        src="/YarnOver21.png"
-        alt="Background Pattern"
-        style={{
-          position:"absolute",
-          top:0,
-          left:0,
-          width:"100%",
-          height:"100%",
-          objectFit:"cover",
-          opacity:0.35,
-          zIndex:0,
-        }}
-      />
+        .auth-title {
+          color: #C05A5A;
+          font-size: clamp(1.8rem, 4vw, 2.4rem);
+          text-align: center;
+          margin-top: 0;
+          margin-bottom: 25px;
+        }
 
-      {/* Header with Home Button */}
-      <div
-        style={{
-          position:"relative",
-          zIndex:2,
-          marginBottom:"30px",
-        }}
-      >
-        <button
-          onClick={() => onNavigate?.("home")}
-          style={{
-            border:"none",
-            background:"none",
-            color:"#C05A5A",
-            fontSize:"24px",
-            cursor:"pointer",
-            fontWeight:700,
-          }}
-        >
-          ← Home
-        </button>
-      </div>
+        .form-group {
+          margin-bottom: 20px;
+        }
 
-      <div
-        style={{
-          position:"relative",
-          zIndex:2,
-          display:"flex",
-          justifyContent:"center",
-          alignItems:"center",
-          minHeight:"calc(100vh - 100px)",
-        }}
-      >
+        .auth-input {
+          width: 100%;
+          padding: 14px;
+          border-radius: 15px;
+          border: 1px solid #E5B2B8;
+          outline: none;
+          font-size: 1rem;
+          box-sizing: border-box;
+          font-family: 'Playfair Display', serif;
+        }
 
-      <div
-        style={{
-          position:"relative",
-          zIndex:2,
-          backgroundColor:"rgba(239,209,214,0.88)",
-          backdropFilter:"blur(6px)",
-          width:"450px",
-          padding:"45px",
-          borderRadius:"35px",
-          textAlign:"center",
-          boxShadow:"0 8px 20px rgba(0,0,0,0.08)",
-        }}
-      >
+        .auth-btn {
+          width: 100%;
+          padding: 14px;
+          border-radius: 15px;
+          border: none;
+          background: #C05A5A;
+          color: white;
+          font-size: 1.1rem;
+          font-weight: 700;
+          cursor: pointer;
+          margin-top: 10px;
+          font-family: 'Playfair Display', serif;
+          transition: background-color 0.2s ease;
+        }
 
-        <h1
-          style={{
-            color:"#CB6565",
-            fontSize:"42px",
-            fontWeight:600,
-            marginBottom:"10px",
-            marginTop:"0px",
-          }}
-        >
-          Create Account 🌸
-        </h1>
+        .auth-btn:hover {
+          background-color: #a84b4b;
+        }
 
-        <p
-          style={{
-            color:"#8f5555",
-            fontSize:"17px",
-            marginBottom:"25px",
-          }}
-        >
-          Join our little yarn world 🧶
+        .toggle-text {
+          text-align: center;
+          margin-top: 20px;
+          color: #666;
+          font-size: 0.95rem;
+        }
+
+        .toggle-link {
+          color: #C05A5A;
+          font-weight: 700;
+          cursor: pointer;
+          text-decoration: underline;
+        }
+      `}</style>
+
+      <div className="auth-card">
+        <h2 className="auth-title">Create Account</h2>
+
+        <form onSubmit={handleRegister}>
+          <div className="form-group">
+            <input
+              type="text"
+              placeholder="Full Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+              className="auth-input"
+            />
+          </div>
+
+          <div className="form-group">
+            <input
+              type="email"
+              placeholder="Email Address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="auth-input"
+            />
+          </div>
+
+          <div className="form-group">
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="auth-input"
+            />
+          </div>
+
+          <button type="submit" className="auth-btn">
+            Sign Up
+          </button>
+        </form>
+
+        <p className="toggle-text">
+          Already have an account?{" "}
+          <span className="toggle-link" onClick={() => onNavigate("login")}>
+            Sign In
+          </span>
         </p>
-
-        <input
-          type="text"
-          placeholder="Your Name"
-          value={name}
-          onChange={(e)=>setName(e.target.value)}
-          style={{
-            width:"90%",
-            padding:"14px",
-            marginBottom:"15px",
-            borderRadius:"18px",
-            border:"2px solid #CB6565",
-            outline:"none",
-            fontFamily:"'Playfair Display', serif",
-            fontSize:"16px",
-          }}
-        />
-
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e)=>setEmail(e.target.value)}
-          style={{
-            width:"90%",
-            padding:"14px",
-            marginBottom:"15px",
-            borderRadius:"18px",
-            border:"2px solid #CB6565",
-            outline:"none",
-            fontFamily:"'Playfair Display', serif",
-            fontSize:"16px",
-          }}
-        />
-
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e)=>setPassword(e.target.value)}
-          style={{
-            width:"90%",
-            padding:"14px",
-            marginBottom:"20px",
-            borderRadius:"18px",
-            border:"2px solid #CB6565",
-            outline:"none",
-            fontFamily:"'Playfair Display', serif",
-            fontSize:"16px",
-          }}
-        />
-
-        <button
-          onClick={handleRegister}
-          style={{
-            width:"100%",
-            padding:"14px",
-            backgroundColor:"#CB6565",
-            color:"white",
-            border:"none",
-            borderRadius:"18px",
-            fontSize:"17px",
-            fontWeight:700,
-            cursor:"pointer",
-            fontFamily:"'Playfair Display', serif",
-            marginBottom:"15px",
-          }}
-        >
-          🌸 Register
-        </button>
-
-        <button
-          onClick={()=>onNavigate("userLogin")}
-          style={{
-            width:"100%",
-            padding:"14px",
-            backgroundColor:"#FFFFFF",
-            color:"#CB6565",
-            border:"2px solid #CB6565",
-            borderRadius:"18px",
-            fontSize:"16px",
-            fontWeight:700,
-            cursor:"pointer",
-            fontFamily:"'Playfair Display', serif",
-          }}
-        >
-          ← Back to Login
-        </button>
-
-
       </div>
-
-      </div>
-
     </div>
-
   );
 }
