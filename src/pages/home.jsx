@@ -140,7 +140,7 @@ export default function Home({ onNavigate, user, handleLogout }) {
           background: transparent;
           color: #CB6565;
           text-align: left;
-          font: 600 1.1rem 'Playfair Display', Georgia, serif;
+          font: italic 600 1.1rem 'Playfair Display', Georgia, serif;
           cursor: pointer;
         }
         .account-dropdown button:hover, .account-dropdown button:focus-visible { background: #FAF4EB; }
@@ -149,7 +149,7 @@ export default function Home({ onNavigate, user, handleLogout }) {
           right: clamp(1rem, 4vw, 4rem);
           bottom: clamp(1rem, 5vh, 3.5rem);
           color: #CB6565;
-          font: 700 clamp(.9rem, 1.5vw, 1.35rem) 'Playfair Display', Georgia, serif;
+          font: italic 700 clamp(.9rem, 1.5vw, 1.35rem) 'Playfair Display', Georgia, serif;
           text-decoration: none;
         }
         .instagram-link:hover, .instagram-link:focus-visible { text-decoration: underline; }

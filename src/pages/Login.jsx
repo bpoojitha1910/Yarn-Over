@@ -108,8 +108,7 @@ export default function Login({ onNavigate }) {
         style={{
           position: "relative",
           zIndex: 2,
-          backgroundColor: "rgba(239, 209, 214, 0.18)",
-          backdropFilter: "blur(5px)",
+          backgroundColor: "#F3D1D8",
           width: "90%",
           maxWidth: "450px",
           margin: "0 auto",
