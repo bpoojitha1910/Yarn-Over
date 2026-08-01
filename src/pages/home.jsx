@@ -55,8 +55,8 @@ export default function Home({ onNavigate, user, handleLogout }) {
         rel="noopener noreferrer"
         style={{
           position: "absolute",
-          top: "30px",
-          right: "24px",
+          bottom: "42px",
+          right: "250px",
           color: "#CB6565",
           textDecoration: "none",
           fontFamily: "'Playfair Display', serif",
@@ -170,7 +170,8 @@ export default function Home({ onNavigate, user, handleLogout }) {
         @media (max-width: 767px) {
           .home-page { overflow-y: auto; background-position: center; }
           .home-content { width: 100%; min-height: 100dvh; padding: 13rem 1.25rem 7rem; justify-content: flex-start; }
-          .home-nav { flex-direction: column; margin-top: 2rem; gap: .6rem; }
+          .home-nav { flex-direction: column; margin-top: 1.4rem; gap: .4rem; }
+          .home-nav-button { padding: .65rem 1rem; }
           .instagram-link { left: 1rem; right: 1rem; text-align: center; }
         }
       `}</style>
