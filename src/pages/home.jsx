@@ -88,7 +88,7 @@ export default function Home({ onNavigate, user, handleLogout }) {
           flex-direction: column;
           transform: translateX(10%);
           margin-bottom: 0rem;
-          margin-top: 1.5rem;
+          
           padding: clamp(12rem, 35vh, 24rem) 1.5rem 8rem;
         }
         .home-copy { text-align: center; color: #CB6565; }
