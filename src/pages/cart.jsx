@@ -28,10 +28,6 @@ export default function Cart({
 
   const [paymentMethod, setPaymentMethod] = useState("");
 
-  // UPI Specific States
-  const [selectedUpiApp, setSelectedUpiApp] = useState("");
-  const [upiId, setUpiId] = useState("");
-
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   const subtotal = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
@@ -62,7 +58,6 @@ export default function Cart({
       return;
     }
 
-  
     try {
       const user = auth.currentUser;
 
@@ -154,10 +149,9 @@ export default function Cart({
       }
 
     } catch (error) {
-  console.error(error);
-  alert("Something went wrong while placing your order. Please try again.");
-
-}
+      console.error(error);
+      alert("Something went wrong while placing your order. Please try again.");
+    }
   };
 
   return (
@@ -519,11 +513,7 @@ export default function Cart({
                   name="paymentMethod"
                   value="COD"
                   checked={paymentMethod === "COD"}
-                  onChange={(e) => {
-                    setPaymentMethod(e.target.value);
-                    setSelectedUpiApp("");
-                    setUpiId("");
-                  }}
+                  onChange={(e) => setPaymentMethod(e.target.value)}
                 />
                 Cash on Delivery
               </label>
@@ -543,49 +533,33 @@ export default function Cart({
               {paymentMethod === "UPI" && (
                 <div
                   style={{
-                    marginLeft: "24px",
-                    padding: "15px",
+                    padding: "16px",
                     background: "#FFF",
-                    borderRadius: "18px",
+                    borderRadius: "16px",
                     border: "1px solid #E5B2B8",
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "12px",
+                    color: "#C05A5A",
+                    fontSize: "14px",
+                    lineHeight: "1.6",
                   }}
                 >
-                  {paymentMethod === "UPI" && (
-  <div
-    style={{
-      marginLeft: "24px",
-      padding: "16px",
-      background: "#FFF",
-      borderRadius: "16px",
-      border: "1px solid #E5B2B8",
-      color: "#C05A5A",
-      fontSize: "14px",
-      lineHeight: "1.6",
-    }}
-  >
-    <strong>Secure Online Payment</strong>
+                  <strong>💳 Secure Online Payment</strong>
 
-    <p style={{ margin: "10px 0 0" }}>
-      After you click <b>Place Order</b>, a secure Razorpay payment window
-      will open where you can pay using:
-    </p>
+                  <p style={{ margin: "10px 0" }}>
+                    After clicking <strong>Place Order</strong>, a secure Razorpay payment
+                    window will open.
+                  </p>
 
-    <ul style={{ marginTop: "8px", paddingLeft: "18px" }}>
-      <li>Google Pay</li>
-      <li>PhonePe</li>
-      <li>Paytm</li>
-      <li>Any UPI App</li>
-      <li>Debit / Credit Card</li>
-    </ul>
+                  
 
-    <p style={{ marginTop: "10px", fontWeight: "bold" }}>
-      Your order will be confirmed only after successful payment.
-    </p>
-  </div>
-)}
+                  <p
+                    style={{
+                      marginTop: "12px",
+                      fontWeight: "bold",
+                      color: "#9B3D3D",
+                    }}
+                  >
+                    ✔ Your order will be confirmed only after successful payment.
+                  </p>
                 </div>
               )}
 
@@ -679,8 +653,6 @@ export default function Cart({
                   pincode: "",
                 });
                 setPaymentMethod("");
-                setSelectedUpiApp("");
-                setUpiId("");
                 onNavigate("home");
               }}
               style={{

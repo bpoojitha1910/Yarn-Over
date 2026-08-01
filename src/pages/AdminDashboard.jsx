@@ -6,6 +6,7 @@ export default function AdminDashboard({ onNavigate }) {
   const [orders, setOrders] = useState([]);
   const [customOrders, setCustomOrders] = useState([]);
   const [products, setProducts] = useState([]);
+  const [reviews, setReviews] = useState([]);
   const [editingProductId, setEditingProductId] = useState(null);
   const [newStock, setNewStock] = useState("");
 
@@ -14,7 +15,7 @@ export default function AdminDashboard({ onNavigate }) {
   }, []);
 
   async function loadAllData() {
-    await Promise.all([loadOrders(), loadCustomOrders(), loadProducts()]);
+    await Promise.all([loadOrders(), loadCustomOrders(), loadProducts(), loadReviews()]);
   }
 
   async function loadOrders() {
@@ -59,6 +60,20 @@ export default function AdminDashboard({ onNavigate }) {
     }
   }
 
+  async function loadReviews() {
+    try {
+      const snapshot = await getDocs(collection(db, "reviews"));
+      const reviewData = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setReviews(reviewData);
+    } catch (error) {
+      console.error("Error loading reviews:", error);
+      alert("Unable to load reviews: " + error.message);
+    }
+  }
+
   async function updateProductStock(productId, newQuantity) {
     try {
       if (newQuantity === "" || Number(newQuantity) < 0) {
@@ -97,6 +112,17 @@ export default function AdminDashboard({ onNavigate }) {
       await loadCustomOrders();
     } catch (error) {
       alert("Failed to delete custom order: " + error.message);
+    }
+  }
+
+  async function deleteReview(id) {
+    const ok = window.confirm("Delete this review?");
+    if (!ok) return;
+    try {
+      await deleteDoc(doc(db, "reviews", id));
+      await loadReviews();
+    } catch (error) {
+      alert("Failed to delete review: " + error.message);
     }
   }
 
@@ -410,7 +436,7 @@ export default function AdminDashboard({ onNavigate }) {
         </div>
       </div>
 
-      {/* BOTTOM SECTION: Scaled & Scrollable Orders Section */}
+      {/* BOTTOM SECTION: Scaled & Scrollable Data Sections */}
       <div
         style={{
           position: "relative",
@@ -639,6 +665,67 @@ export default function AdminDashboard({ onNavigate }) {
                       🗑 Delete
                     </button>
                   </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+
+        {/* REVIEWS MANAGEMENT SECTION */}
+        <section>
+          <h2 style={{ marginTop: 0, marginBottom: "12px", color: "#be556a", fontSize: "18px" }}>
+            Customer Reviews ({reviews.length})
+          </h2>
+          {reviews.length === 0 ? (
+            <div style={{ background: "#fff", padding: "12px", borderRadius: "10px", border: "1px dashed #ccc" }}>
+              <span style={{ fontSize: "14px" }}>No reviews found 🌸</span>
+            </div>
+          ) : (
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+                gap: "12px",
+              }}
+            >
+              {reviews.map((rev) => (
+                <div
+                  key={rev.id}
+                  style={{
+                    background: "#FFF9FA",
+                    padding: "14px",
+                    borderRadius: "12px",
+                    boxShadow: "0 4px 12px rgba(0,0,0,0.06)",
+                    borderLeft: "6px solid #E57373",
+                    border: "1px solid #FAD2E1",
+                    borderLeftWidth: "6px",
+                    fontSize: "14px",
+                    lineHeight: "1.4",
+                  }}
+                >
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
+                    <span style={{ fontWeight: "bold", color: "#333" }}>👤 {rev.name || rev.author || "Anonymous"}</span>
+                    <span style={{ color: "#FFB703" }}>{"⭐".repeat(rev.rating || 5)}</span>
+                  </div>
+                  <p style={{ margin: "6px 0 12px 0", color: "#555", fontStyle: "italic" }}>
+                    "{rev.review || rev.comment || rev.text}"
+                  </p>
+                  <button
+                    onClick={() => deleteReview(rev.id)}
+                    style={{
+                      background: "#C05A5A",
+                      color: "white",
+                      border: "none",
+                      padding: "6px 10px",
+                      borderRadius: "6px",
+                      cursor: "pointer",
+                      fontSize: "13px",
+                      fontWeight: "bold",
+                      width: "100%",
+                    }}
+                  >
+                    🗑 Delete Review
+                  </button>
                 </div>
               ))}
             </div>

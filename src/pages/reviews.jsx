@@ -1,41 +1,54 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { db } from "../firebase";
+import { collection, addDoc, getDocs } from "firebase/firestore";
 
 export default function Reviews({ onNavigate }) {
-  const [reviews, setReviews] = useState([
-    {
-      id: 1,
-      name: "Ananya 🌸",
-      item: "Crochet Rose Bouquet",
-      note: "The bouquet was so beautiful and packaged with so much care! Will definitely order again 💕",
-      bgColor: "#EFD1D6",
-    },
-    {
-      id: 2,
-      name: "Ria 🍓",
-      item: "Spider-Man Keychain",
-      note: "Ordered a custom keychain and it exceeded all my expectations. 10/10 quality! ✨",
-      bgColor: "#F4B9B9",
-    },
-  ]);
-
+  const [reviews, setReviews] = useState([]);
   const [name, setName] = useState("");
   const [item, setItem] = useState("");
   const [note, setNote] = useState("");
 
-  const handlePost = (e) => {
+  // Load reviews from Firestore on initial mount
+  useEffect(() => {
+    loadReviews();
+  }, []);
+
+  const loadReviews = async () => {
+    try {
+      const snapshot = await getDocs(collection(db, "reviews"));
+      const data = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      // Display newest reviews first
+      setReviews(data.reverse());
+    } catch (error) {
+      console.error("Error fetching reviews:", error);
+    }
+  };
+
+  const handlePost = async (e) => {
     e.preventDefault();
-    if (name && note) {
-      const newReview = {
-        id: Date.now(),
+    if (!name.trim() || !note.trim()) return;
+
+    try {
+      // Save directly to Firestore collection 'reviews'
+      await addDoc(collection(db, "reviews"), {
         name: name,
         item: item || "Custom Crochet Item",
         note: note,
         bgColor: "#EFD1D6",
-      };
-      setReviews([newReview, ...reviews]);
+        createdAt: new Date(),
+      });
+
+      // Clear input fields and reload reviews
       setName("");
       setItem("");
       setNote("");
+      await loadReviews();
+    } catch (error) {
+      console.error("Error posting review:", error);
+      alert("Failed to post review. Please try again.");
     }
   };
 
@@ -47,16 +60,17 @@ export default function Reviews({ onNavigate }) {
         width: "100vw",
         position: "relative",
         overflowX: "hidden",
+        overflowY: "auto",
         fontFamily: "'Playfair Display', serif",
         display: "flex",
         flexDirection: "column",
-        justify: "space-between",
+        justifyContent: "space-between",
         padding: "30px 40px",
         boxSizing: "border-box",
         margin: 0,
       }}
     >
-      {/* Full-width Background Image Overlay (Matching Custom Orders) */}
+      {/* Background Image Overlay */}
       <img
         src="/YarnOver21.png"
         alt="Background Pattern"
@@ -65,7 +79,7 @@ export default function Reviews({ onNavigate }) {
           top: 0,
           left: 0,
           width: "100vw",
-          height: "100vh",
+          height: "100%",
           objectFit: "cover",
           zIndex: 0,
           opacity: 0.35,
@@ -133,16 +147,6 @@ export default function Reviews({ onNavigate }) {
           >
             reviews
           </h1>
-          <p
-            style={{
-              color: "#1A1A1A",
-              fontSize: "18px",
-              fontWeight: 600,
-              margin: 0,
-            }}
-          >
-            
-          </p>
         </div>
 
         {/* Page Content: Form on Left + Reviews Grid on Right */}
@@ -262,66 +266,81 @@ export default function Reviews({ onNavigate }) {
               gap: "24px",
             }}
           >
-            {reviews.map((rev) => (
+            {reviews.length === 0 ? (
               <div
-                key={rev.id}
                 style={{
-                  backgroundColor: rev.bgColor,
+                  backgroundColor: "rgba(255, 255, 255, 0.7)",
                   borderRadius: "28px",
-                  padding: "24px",
-                  boxSizing: "border-box",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                  boxShadow: "0 8px 18px rgba(0,0,0,0.05)",
-                  minHeight: "200px",
+                  padding: "30px",
+                  textAlign: "center",
+                  color: "#666",
+                  fontSize: "16px",
                 }}
               >
-                <div>
-                  <div
-                    style={{
-                      fontSize: "24px",
-                      marginBottom: "10px",
-                    }}
-                  >
-                    💬
-                  </div>
-                  <p
-                    style={{
-                      fontSize: "16px",
-                      color: "#1A1A1A",
-                      fontStyle: "italic",
-                      lineHeight: "1.4",
-                      margin: "0 0 16px 0",
-                    }}
-                  >
-                    "{rev.note}"
-                  </p>
-                </div>
-
-                <div>
-                  <h4
-                    style={{
-                      fontSize: "18px",
-                      fontWeight: 700,
-                      color: "#1A1A1A",
-                      margin: "0 0 2px 0",
-                    }}
-                  >
-                    — {rev.name}
-                  </h4>
-                  <p
-                    style={{
-                      fontSize: "13px",
-                      color: "#555",
-                      margin: 0,
-                    }}
-                  >
-                    {rev.item}
-                  </p>
-                </div>
+                No reviews yet. Be the first to leave one! 🌸
               </div>
-            ))}
+            ) : (
+              reviews.map((rev) => (
+                <div
+                  key={rev.id}
+                  style={{
+                    backgroundColor: rev.bgColor || "#EFD1D6",
+                    borderRadius: "28px",
+                    padding: "24px",
+                    boxSizing: "border-box",
+                    display: "flex",
+                    flexDirection: "column",
+                    justify: "space-between",
+                    boxShadow: "0 8px 18px rgba(0,0,0,0.05)",
+                    minHeight: "200px",
+                  }}
+                >
+                  <div>
+                    <div
+                      style={{
+                        fontSize: "24px",
+                        marginBottom: "10px",
+                      }}
+                    >
+                      💬
+                    </div>
+                    <p
+                      style={{
+                        fontSize: "16px",
+                        color: "#1A1A1A",
+                        fontStyle: "italic",
+                        lineHeight: "1.4",
+                        margin: "0 0 16px 0",
+                      }}
+                    >
+                      "{rev.note}"
+                    </p>
+                  </div>
+
+                  <div>
+                    <h4
+                      style={{
+                        fontSize: "18px",
+                        fontWeight: 700,
+                        color: "#1A1A1A",
+                        margin: "0 0 2px 0",
+                      }}
+                    >
+                      — {rev.name}
+                    </h4>
+                    <p
+                      style={{
+                        fontSize: "13px",
+                        color: "#555",
+                        margin: 0,
+                      }}
+                    >
+                      {rev.item}
+                    </p>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         </div>
       </div>
@@ -333,7 +352,7 @@ export default function Reviews({ onNavigate }) {
           maxWidth: "1140px",
           margin: "0 auto",
           display: "flex",
-          justifyContent: "flex-end",
+          justify: "flex-end",
           zIndex: 10,
         }}
       >
@@ -343,6 +362,7 @@ export default function Reviews({ onNavigate }) {
           rel="noreferrer"
           style={{
             color: "#CB6565",
+            marginLeft: "1060px",
             fontSize: "22px",
             fontWeight: 700,
             textDecoration: "none",
