@@ -106,8 +106,8 @@ export default function Home({ onNavigate, user, handleLogout }) {
         }
         .home-nav-button {
           padding: .75rem 1.25rem;
-          border: 1px solid rgba(203, 101, 101, 0.25);
-          background: rgba(255, 255, 255, 0.82);
+          border: none;
+          background: transparent;
           color: #1A1A1A;
           font-family: 'Playfair Display', Georgia, serif;
           font-size: clamp(0.98rem, 1.4vw, 1.35rem);
@@ -116,8 +116,8 @@ export default function Home({ onNavigate, user, handleLogout }) {
           cursor: pointer;
           white-space: nowrap;
           border-radius: 18px;
-          box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-          transition: transform .2s ease, color .2s ease, background-color .2s ease;
+          box-shadow: none;
+          transition: transform .2s ease, color .2s ease, text-decoration .2s ease;
         }
         .home-nav-button:hover, .home-nav-button:focus-visible { color: #CB6565; }
         .account-menu { position: relative; }
