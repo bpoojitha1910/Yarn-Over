@@ -45,7 +45,7 @@ export default function MyOrders({ onNavigate }) {
         style={{
           display: "flex",
           alignItems: "center",
-          justify: "space-between",
+          justifyContent: "space-between",
           maxWidth: "1000px",
           margin: "0 auto 30px auto",
         }}
@@ -57,8 +57,10 @@ export default function MyOrders({ onNavigate }) {
             background: "none",
             color: "#C05A5A",
             fontSize: "18px",
-            fontWeight: 700,
+            fontWeight: 800,
             cursor: "pointer",
+            marginLeft: "-250px",
+            marginTop: "-50px",
           }}
         >
           ← Home
@@ -67,9 +69,9 @@ export default function MyOrders({ onNavigate }) {
         <h1
           style={{
             color: "#CB6565",
-            margin: 0,
-            fontSize: "clamp(24px, 4vw, 36px)",
+            flex: 1,
             textAlign: "center",
+            fontSize: "clamp(24px, 4vw, 36px)",
           }}
         >
           My Orders 📦
@@ -80,7 +82,7 @@ export default function MyOrders({ onNavigate }) {
       {/* Orders List Container */}
       <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
         {orders.length === 0 ? (
-          <h2 style={{ textAlign: "center", color: "#666" }}>No Orders Yet 🧶</h2>
+          <h2 style={{ textAlign: "center", color: "#666", margin: "40px auto 0", maxWidth: "1000px",marginLeft:"-100px" }}>No Orders Yet 🧶</h2>
         ) : (
           orders.map((order) => (
             <div

@@ -63,7 +63,7 @@ export default function Collections({
   return (
     <div
       style={{
-        minHeight: "100vh",
+        height: "100vh",
         width: "100%",
         position: "relative",
         overflowX: "hidden",
@@ -115,6 +115,7 @@ export default function Collections({
             cursor: "pointer",
             padding: 0,
             fontFamily: "'Playfair Display', serif",
+            marginLeft: "-150px",
           }}
         >
           ← home
@@ -149,6 +150,7 @@ export default function Collections({
               margin: 0,
               lineHeight: 1,
               fontFamily: "'Playfair Display', serif",
+              marginTop: "-20px",
             }}
           >
             our collections
@@ -214,7 +216,7 @@ export default function Collections({
                       backfaceVisibility: "hidden",
                       WebkitBackfaceVisibility: "hidden",
                       borderRadius: "40px",
-                      overflow: "hidden",
+                      
                       boxShadow: "0 8px 18px rgba(0,0,0,0.06)",
                     }}
                   >

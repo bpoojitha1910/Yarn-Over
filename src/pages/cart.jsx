@@ -2,6 +2,7 @@ import { useState } from "react";
 import { auth } from "../firebase";
 import { API_URL } from "../config";
 
+
 const inputStyle = {
   width: "100%",
   padding: "14px",
@@ -13,6 +14,7 @@ const inputStyle = {
   fontFamily: "'Playfair Display', serif",
   backgroundColor: "#FFF",
 };
+
 
 export default function Cart({
   onNavigate,
@@ -28,12 +30,14 @@ export default function Cart({
   const [paymentMethod, setPaymentMethod] = useState("");
   const [orderSuccess, setOrderSuccess] = useState(null);
 
+
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   const subtotal = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
   );
   const total = subtotal;
+
 
   const handlePlaceOrder = async () => {
     if (cartItems.length === 0) {
@@ -54,12 +58,14 @@ export default function Cart({
       return;
     }
 
+
     try {
       const user = auth.currentUser;
       if (!user) {
         alert("Please log in before placing an order.");
         return;
       }
+
 
       const submitOrder = async (paymentDetails = {}) => {
         const response = await fetch(`${API_URL}/orders`, {
@@ -78,6 +84,7 @@ export default function Cart({
           }),
         });
 
+
         const data = await response.json();
         if (!response.ok) {
           alert(data.error || "Failed to place order.");
@@ -85,6 +92,7 @@ export default function Cart({
         }
         setOrderSuccess(data);
       };
+
 
       if (paymentMethod === "UPI") {
         const orderResponse = await fetch(
@@ -104,6 +112,7 @@ export default function Cart({
           alert(razorpayOrder.error || "Failed to initialize payment.");
           return;
         }
+
 
         const options = {
           key: import.meta.env.VITE_RAZORPAY_KEY_ID,
@@ -129,6 +138,7 @@ export default function Cart({
           },
         };
 
+
         const rzp = new window.Razorpay(options);
         rzp.open();
       } else {
@@ -139,6 +149,7 @@ export default function Cart({
       alert("Something went wrong while placing your order. Please try again.");
     }
   };
+
 
   return (
     <div
@@ -167,6 +178,7 @@ export default function Cart({
           zIndex: 0,
         }}
       />
+
 
       {/* Header */}
       <div
@@ -198,14 +210,15 @@ export default function Cart({
           style={{
             color: "#C05A5A",
             fontSize: "clamp(28px, 5vw, 44px)",
-            margin: "0 auto",
-            textAlign: "center",
+            marginLeft: "450px",
+            marginTop: "-10px",
           }}
         >
           Cart & Checkout
         </h1>
         <div style={{ width: "60px" }} />
       </div>
+
 
       {/* Main Responsive Container */}
       <div
@@ -231,14 +244,23 @@ export default function Cart({
         >
           {/* SECTION 1: Scrollable Items Table */}
           <div
-            style={{
-              background: "rgba(255, 255, 255, 0.85)",
-              borderRadius: "25px",
-              padding: "20px",
-              boxShadow: "0 4px 15px rgba(0,0,0,0.02)",
-              boxSizing: "border-box",
-            }}
-          >
+style={{
+background: "rgba(255, 255, 255, 0.85)",
+borderRadius: "25px",
+padding: "30px",
+minHeight: "250px",
+boxShadow: "0 4px 15px rgba(0,0,0,0.02)",
+overflowY: "auto",
+overflowX: "120px",
+maxHeight: "150px",
+marginBottom: 0,
+boxSizing: "border-box",
+marginTop: "-40px",
+marginLeft: "-100px",
+}}
+>
+
+
             <h2 style={{ marginTop: 0, color: "#C05A5A", fontSize: "26px" }}>
               Your Cart
             </h2>
@@ -374,6 +396,7 @@ export default function Cart({
             )}
           </div>
 
+
           {/* SECTION 2: Delivery Details */}
           <div
             style={{
@@ -381,6 +404,8 @@ export default function Cart({
               borderRadius: "25px",
               padding: "25px",
               boxShadow: "0 4px 15px rgba(0,0,0,0.02)",
+              marginLeft: "-100px",
+              marginTop: "-19px",
             }}
           >
             <h2 style={{ marginTop: 0, color: "#C05A5A", fontSize: "26px" }}>
@@ -427,6 +452,7 @@ export default function Cart({
           </div>
         </div>
 
+
         {/* RIGHT COLUMN: Checkout Summaries (Stacks below on mobile) */}
         <div
           style={{
@@ -443,6 +469,8 @@ export default function Cart({
               borderRadius: "25px",
               padding: "25px",
               boxShadow: "0 4px 15px rgba(0,0,0,0.02)",
+              marginRight: "-100px",
+              marginTop: "-50px",
             }}
           >
             <h2 style={{ marginTop: 0, color: "#C05A5A", fontSize: "26px" }}>
@@ -477,6 +505,7 @@ export default function Cart({
             </div>
           </div>
 
+
           {/* SECTION 4: Payment Method & Submit */}
           <div
             style={{
@@ -484,6 +513,8 @@ export default function Cart({
               borderRadius: "25px",
               padding: "25px",
               boxShadow: "0 4px 15px rgba(0,0,0,0.02)",
+              marginRight: "-100px",
+              marginTop: "-10px",
             }}
           >
             <h2 style={{ marginTop: 0, color: "#C05A5A", fontSize: "26px", marginBottom: "15px" }}>
@@ -550,6 +581,7 @@ export default function Cart({
         </div>
       </div>
 
+
       {/* Success Modal */}
       {orderSuccess && (
         <div
@@ -558,7 +590,7 @@ export default function Cart({
             inset: 0,
             background: "rgba(0,0,0,0.4)",
             display: "flex",
-            justify: "center",
+            justifyContent: "center",
             alignItems: "center",
             zIndex: 9999,
             padding: "20px",
@@ -608,3 +640,4 @@ export default function Cart({
     </div>
   );
 }
+

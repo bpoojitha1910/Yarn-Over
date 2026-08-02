@@ -117,7 +117,7 @@ maxWidth: "700px",
 boxShadow: "0 10px 30px rgba(0,0,0,0.05)",
 marginBottom: "40px",
 boxSizing: "border-box",
-marginTop: "10px",
+marginTop: "-20px",
 }}
 >
 <h1
