@@ -115,7 +115,7 @@ export default function Collections({
             cursor: "pointer",
             padding: 0,
             fontFamily: "'Playfair Display', serif",
-            marginLeft: "-150px",
+           
           }}
         >
           ← home
@@ -343,24 +343,7 @@ export default function Collections({
           zIndex: 10,
         }}
       >
-        <a
-          href="https://www.instagram.com/__yarn_over__/"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            position: "absolute",
-            bottom: "40px",
-            right: "100px",
-            color: "#CB6565",
-            textDecoration: "none",
-            fontFamily: "'Playfair Display', serif",
-            fontSize: "25px",
-            fontWeight: "500",
-            cursor: "pointer",
-          }}
-        >
-          @__yarn_over__
-        </a>
+        
       </div>
     </div>
   );

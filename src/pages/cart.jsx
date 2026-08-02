@@ -187,7 +187,8 @@ export default function Cart({
           zIndex: 2,
           display: "flex",
           alignItems: "center",
-          justify: "space-between",
+          justifyContent: "space-between",
+          width: "100%",
           marginBottom: "25px",
           flexWrap: "wrap",
           gap: "10px",
@@ -210,8 +211,10 @@ export default function Cart({
           style={{
             color: "#C05A5A",
             fontSize: "clamp(28px, 5vw, 44px)",
-            marginLeft: "450px",
-            marginTop: "-10px",
+            margin: "0 auto",
+            textAlign: "center",
+            flex: "1 1 100%",
+            maxWidth: "100%",
           }}
         >
           Cart & Checkout
@@ -235,30 +238,30 @@ export default function Cart({
         {/* LEFT COLUMN: Cart Items & Delivery Details */}
         <div
           style={{
-            flex: "1 1 550px",
+            flex: "1 1 100%",
             display: "flex",
             flexDirection: "column",
             gap: "25px",
             minWidth: 0,
+            maxWidth: "100%",
           }}
         >
           {/* SECTION 1: Scrollable Items Table */}
           <div
-style={{
-background: "rgba(255, 255, 255, 0.85)",
-borderRadius: "25px",
-padding: "30px",
-minHeight: "250px",
-boxShadow: "0 4px 15px rgba(0,0,0,0.02)",
-overflowY: "auto",
-overflowX: "120px",
-maxHeight: "150px",
-marginBottom: 0,
-boxSizing: "border-box",
-marginTop: "-40px",
-marginLeft: "-100px",
-}}
->
+            style={{
+              background: "rgba(255, 255, 255, 0.85)",
+              borderRadius: "25px",
+              padding: "30px",
+              minHeight: "250px",
+              boxShadow: "0 4px 15px rgba(0,0,0,0.02)",
+              overflowY: "auto",
+              overflowX: "auto",
+              maxHeight: "150px",
+              marginBottom: 0,
+              boxSizing: "border-box",
+              width: "100%",
+            }}
+          >
 
 
             <h2 style={{ marginTop: 0, color: "#C05A5A", fontSize: "26px" }}>
@@ -404,8 +407,8 @@ marginLeft: "-100px",
               borderRadius: "25px",
               padding: "25px",
               boxShadow: "0 4px 15px rgba(0,0,0,0.02)",
-              marginLeft: "-100px",
-              marginTop: "-19px",
+              width: "100%",
+              marginTop: "0",
             }}
           >
             <h2 style={{ marginTop: 0, color: "#C05A5A", fontSize: "26px" }}>
@@ -456,10 +459,11 @@ marginLeft: "-100px",
         {/* RIGHT COLUMN: Checkout Summaries (Stacks below on mobile) */}
         <div
           style={{
-            flex: "1 1 320px",
+            flex: "1 1 100%",
             display: "flex",
             flexDirection: "column",
             gap: "25px",
+            maxWidth: "100%",
           }}
         >
           {/* SECTION 3: Order Summary */}
@@ -469,8 +473,8 @@ marginLeft: "-100px",
               borderRadius: "25px",
               padding: "25px",
               boxShadow: "0 4px 15px rgba(0,0,0,0.02)",
-              marginRight: "-100px",
-              marginTop: "-50px",
+              width: "100%",
+              marginTop: "0",
             }}
           >
             <h2 style={{ marginTop: 0, color: "#C05A5A", fontSize: "26px" }}>
@@ -493,7 +497,7 @@ marginLeft: "-100px",
               <div
                 style={{
                   display: "flex",
-                  justify: "space-between",
+                  justifyContent: "space-between",
                   fontSize: "22px",
                   fontWeight: 700,
                   color: "#C05A5A",
@@ -513,8 +517,8 @@ marginLeft: "-100px",
               borderRadius: "25px",
               padding: "25px",
               boxShadow: "0 4px 15px rgba(0,0,0,0.02)",
-              marginRight: "-100px",
-              marginTop: "-10px",
+              width: "100%",
+              marginTop: "0",
             }}
           >
             <h2 style={{ marginTop: 0, color: "#C05A5A", fontSize: "26px", marginBottom: "15px" }}>
