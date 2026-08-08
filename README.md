@@ -1,16 +1,63 @@
-# React + Vite
+🧶 Yarn Over
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A full-stack crochet e-commerce web application built to bring handmade crochet products into a simple and cozy online shopping experience.
 
-Currently, two official plugins are available:
+🔗 Live Website: https://yarn-over-dun.vercel.app/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-## React Compiler
+✨ Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- 🛍️ Browse crochet collections
+- 🧶 Product collections with stock availability
+- 🛒 Add products to cart
+- 💳 Razorpay payment integration
+- 📦 Order placement and order management
+- 🎀 Custom crochet orders
+- ⭐ Customer reviews
+- 🔐 User authentication
+- 👩‍💻 Admin dashboard
+- 📊 Product and order management
+- 🔥 Firebase database integration
+- 📱 Responsive design
 
-## Expanding the Oxlint configuration
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+🛠️ Tech Stack
+
+Frontend
+- React
+- Vite
+- JavaScript
+- HTML
+- CSS
+Backend
+- Node.js
+- Express.js
+Database & Services
+- Firebase Firestore
+- Firebase Authentication
+- Razorpay
+
+Deployment
+- Vercel — Frontend
+- Render — Backend
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+## 📂 Project Structure
+Yarn-Over/
+│
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   └── App.jsx
+│   └── package.json
+│
+├── backend/
+│   ├── server.js
+│   ├── .env
+│   └── package.json
+│
+└── README.md
